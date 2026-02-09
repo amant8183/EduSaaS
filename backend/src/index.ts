@@ -6,6 +6,7 @@ dotenv.config();
 import { connectDB } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import pricingRoutes from "./routes/pricingRoutes";
+import paymentRoutes from "./routes/paymentRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +30,7 @@ app.get("/", (_req, res) => {
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/pricing", pricingRoutes);
+app.use("/api/payment", paymentRoutes);
 
 // 404 handler
 app.use((_req, res) => {
