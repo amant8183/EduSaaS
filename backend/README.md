@@ -1,161 +1,254 @@
-# SaaS Platform Backend
+# 🎓 EduSaaS Platform — Backend
 
-Backend API for a multi-portal SaaS platform with subscription management, Razorpay payment integration, and admin dashboard.
+A production-ready Node.js/TypeScript backend for a multi-portal education SaaS platform with Razorpay payment integration, role-based access control, and dynamic pricing.
 
-## Features
+---
 
-- 🔐 JWT-based authentication with email verification
-- 💳 Razorpay payment integration
-- 📧 Email service (Brevo SMTP)
-- 👥 Multi-portal subscription system (Admin, Teacher, Student)
-- 📊 Admin dashboard with user & payment management
-- 🔄 Refresh token support for multi-device sessions
-- 💰 Dynamic pricing with bundle discounts
+## 🏗️ Tech Stack
 
-## Tech Stack
+| Layer | Technology |
+|-------|-----------|
+| **Runtime** | Node.js + TypeScript |
+| **Framework** | Express.js |
+| **Database** | MongoDB (Mongoose ODM) |
+| **Auth** | JWT + bcrypt + Refresh Tokens |
+| **Payments** | Razorpay (Orders, Verification, Webhooks) |
+| **Email** | Nodemailer + Brevo SMTP |
+| **Validation** | Zod |
 
-- **Runtime:** Node.js with TypeScript
-- **Framework:** Express.js
-- **Database:** MongoDB with Mongoose
-- **Authentication:** JWT + bcrypt
-- **Payment Gateway:** Razorpay
-- **Email:** Nodemailer (Brevo SMTP)
-- **Validation:** Zod
+---
 
-## Prerequisites
-
-- Node.js 18+ and npm
-- MongoDB Atlas account (or local MongoDB)
-- Razorpay account (test mode)
-- Brevo account for SMTP
-
-## Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Saas_Platform/backend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables**
-   
-   Copy `.env.example` to `.env` and fill in your credentials:
-   ```bash
-   cp .env.example .env
-   ```
-
-   Required environment variables:
-   - `MONGO_URI` - MongoDB connection string
-   - `JWT_SECRET` - Secret key for JWT (min 32 characters)
-   - `BREVO_SMTP_*` - Brevo SMTP credentials
-   - `RAZORPAY_KEY_ID` & `RAZORPAY_KEY_SECRET` - Razorpay credentials
-   - `FROM_EMAIL` - Sender email address
-   - `FRONTEND_URL` - Frontend application URL
-
-## Running the Application
-
-### Development Mode
-```bash
-npm run dev
-```
-Server runs on `http://localhost:5000` with auto-reload
-
-### Production Mode
-```bash
-npm run build
-npm start
-```
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 backend/
 ├── src/
-│   ├── config/          # Database, Razorpay configuration
-│   ├── models/          # Mongoose schemas
-│   ├── controllers/     # Route handlers
-│   ├── routes/          # API route definitions
-│   ├── middleware/      # Auth, validation middleware
-│   ├── services/        # Email, payment services
-│   ├── utils/           # Helper functions, validation
-│   ├── types/           # TypeScript types/interfaces
-│   └── index.ts         # Entry point
-├── .env                 # Environment variables (gitignored)
-├── .env.example         # Example environment variables
+│   ├── config/          # Database, Razorpay, Pricing configs
+│   │   ├── database.ts
+│   │   ├── razorpay.ts
+│   │   └── pricing.ts
+│   ├── controllers/     # Request handlers
+│   │   ├── authController.ts
+│   │   ├── pricingController.ts
+│   │   ├── paymentController.ts
+│   │   ├── userController.ts
+│   │   └── adminController.ts
+│   ├── middleware/       # Auth & Admin guards
+│   │   ├── auth.ts
+│   │   └── adminAuth.ts
+│   ├── models/           # Mongoose schemas
+│   │   ├── User.ts
+│   │   ├── Subscription.ts
+│   │   ├── Payment.ts
+│   │   └── Order.ts
+│   ├── routes/           # Express route definitions
+│   │   ├── authRoutes.ts
+│   │   ├── pricingRoutes.ts
+│   │   ├── paymentRoutes.ts
+│   │   ├── userRoutes.ts
+│   │   └── adminRoutes.ts
+│   ├── services/         # Email service
+│   │   └── emailService.ts
+│   ├── types/            # TypeScript declarations
+│   │   └── express.d.ts
+│   ├── utils/            # Validation schemas
+│   │   └── validation.ts
+│   └── index.ts          # App entry point
+├── .env.example
 ├── package.json
 ├── tsconfig.json
-└── README.md
+└── TESTING.md
 ```
 
-## API Endpoints
+---
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `GET /api/auth/verify-email?token=` - Verify email
-- `POST /api/auth/resend-verification` - Resend verification email
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/refresh-token` - Refresh access token
-- `POST /api/auth/logout` - Logout (invalidate refresh token)
-- `POST /api/auth/logout-all` - Logout from all devices
-- `POST /api/auth/forgot-password` - Request password reset
-- `POST /api/auth/reset-password` - Reset password
-- `GET /api/auth/me` - Get current user (protected)
+## 🚀 Getting Started
 
-### Pricing
-- `POST /api/pricing/calculate` - Calculate price for selected portals/features
-- `GET /api/pricing/portals` - Get available portals
-- `GET /api/pricing/features` - Get available features
+### Prerequisites
 
-### Payment
-- `POST /api/payment/create-order` - Create Razorpay order (protected)
-- `POST /api/payment/verify` - Verify payment (protected)
-- `GET /api/payment/history` - Get payment history (protected)
-- `GET /api/payment/:paymentId` - Get payment details (protected)
+- **Node.js** v18+
+- **MongoDB Atlas** account (or local MongoDB)
+- **Razorpay** account (test mode)
+- **Brevo** account (for SMTP emails)
 
-### User Dashboard
-- `GET /api/user/profile` - Get user profile (protected)
-- `PUT /api/user/profile` - Update user profile (protected)
-- `GET /api/user/subscription` - Get subscription details (protected)
-- `PUT /api/user/subscription` - Update subscription (protected)
-- `DELETE /api/user/subscription` - Cancel subscription (protected)
+### Installation
 
-### Admin (Admin Only)
-- `GET /api/admin/users` - Get all users
-- `GET /api/admin/users/:userId` - Get user details
-- `GET /api/admin/payments` - Get all payments
-- `GET /api/admin/subscriptions` - Get all subscriptions
-- `GET /api/admin/metrics` - Get dashboard metrics
+```bash
+# Clone the repository
+git clone https://github.com/amant8183/EduSaaS.git
+cd EduSaaS/backend
 
-## Development Workflow
+# Install dependencies
+npm install
 
-This project follows a phased development approach with proper commit messages:
+# Configure environment
+cp .env.example .env
+# Edit .env with your actual credentials
 
-1. ✅ Phase 1: Project Setup & Core Configuration
-2. Phase 2: Authentication System
-3. Phase 3: Data Models & Pricing Logic
-4. Phase 4: Razorpay Payment Integration
-5. Phase 5: User Dashboard APIs
-6. Phase 6: Admin Portal APIs
-7. Phase 7: Testing & Validation
-8. Phase 8: Documentation
+# Start development server
+npm run dev
+```
 
-Each phase is tested before committing and moving to the next phase.
+The server starts on `http://localhost:5000`.
 
-## Testing
+### Available Scripts
 
-Use Postman or similar API testing tools.
+| Script | Command | Description |
+|--------|---------|-------------|
+| Dev | `npm run dev` | Start with hot-reload (nodemon) |
+| Build | `npm run build` | Compile TypeScript to `dist/` |
+| Start | `npm start` | Run production build |
+| Clean | `npm run clean` | Remove `dist/` directory |
 
-**Razorpay Test Credentials:**
-- Card: `4111 1111 1111 1111`
-- CVV: Any 3 digits
-- Expiry: Any future date
-- UPI: `success@razorpay`
+---
 
-## License
+## 📡 API Endpoints
+
+### Authentication (`/api/auth`)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/register` | ❌ | Register new user |
+| POST | `/login` | ❌ | Login, returns JWT + refresh token |
+| GET | `/verify-email?token=` | ❌ | Verify email address |
+| POST | `/resend-verification` | ❌ | Resend verification email |
+| POST | `/forgot-password` | ❌ | Request password reset |
+| POST | `/reset-password` | ❌ | Reset password with token |
+| POST | `/refresh` | ❌ | Refresh access token |
+| POST | `/logout` | ✅ | Logout (invalidate refresh token) |
+| POST | `/logout-all` | ✅ | Logout all devices |
+| GET | `/me` | ✅ | Get current user |
+
+### Pricing (`/api/pricing`)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/all` | ❌ | Complete pricing page data |
+| GET | `/portals` | ❌ | Available portals |
+| GET | `/features` | ❌ | Available features by portal |
+| GET | `/discounts` | ❌ | Bundle discount info |
+| POST | `/calculate` | ❌ | Calculate total price |
+
+### Payments (`/api/payment`)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/create-order` | ✅ | Create Razorpay order |
+| POST | `/verify` | ✅ | Verify payment & activate subscription |
+| GET | `/history` | ✅ | User's payment history |
+| POST | `/webhook` | ❌* | Razorpay webhook handler |
+
+*\*Verified via Razorpay signature*
+
+### User Dashboard (`/api/user`)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/profile` | ✅ | User profile |
+| GET | `/dashboard` | ✅ | Dashboard summary |
+| GET | `/subscription` | ✅ | Active subscription details |
+| GET | `/payments` | ✅ | Payment history (paginated) |
+| PATCH | `/subscription/auto-renew` | ✅ | Toggle auto-renewal |
+| POST | `/subscription/cancel` | ✅ | Cancel subscription |
+
+### Admin (`/api/admin`)
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/dashboard` | 🔒 | Platform metrics & stats |
+| GET | `/users` | 🔒 | All users (search, filter, paginate) |
+| GET | `/users/:userId` | 🔒 | User details with payments |
+| PATCH | `/users/:userId/role` | 🔒 | Update user role |
+| GET | `/subscriptions` | 🔒 | All subscriptions |
+| GET | `/payments` | 🔒 | All payments |
+
+> ✅ = Requires Bearer token &nbsp;|&nbsp; 🔒 = Requires Bearer token + Admin role
+
+---
+
+## 💰 Pricing Model
+
+### Portal Base Prices (per month)
+
+| Portal | Price |
+|--------|-------|
+| School Admin | ₹2,000 |
+| Teacher | ₹800 |
+| Student | ₹400 |
+
+### Bundle Discounts
+
+| Bundle | Discount |
+|--------|----------|
+| Admin + Teacher | 15% off portal prices |
+| Teacher + Student | 10% off portal prices |
+| All Three Portals | 20% off portal prices |
+
+### Billing Options
+
+- **Monthly** — Standard pricing
+- **Annual** — 2 months free (pay for 10, get 12)
+
+Each portal includes core features. Optional add-on features are available at ₹100–₹500/month per feature.
+
+---
+
+## 🔐 Authentication Flow
+
+```
+Register → Email Verification → Login → Access Token (15 min) + Refresh Token (7 days)
+```
+
+- **Access Token**: Short-lived JWT, sent in `Authorization: Bearer <token>` header
+- **Refresh Token**: Long-lived, hashed and stored in DB, supports up to 5 devices
+- **Password Reset**: Secure token-based flow via email
+
+---
+
+## 💳 Payment Flow
+
+```
+1. Client calls POST /api/payment/create-order
+2. Server creates Razorpay order, returns order ID + Razorpay public key
+3. Client opens Razorpay Checkout with order ID
+4. User completes payment on Razorpay
+5. Client calls POST /api/payment/verify with payment details
+6. Server verifies signature, activates subscription
+7. Confirmation email sent to user
+```
+
+---
+
+## 🧪 Testing
+
+Import the Postman collection for easy testing:
+
+```bash
+backend/EduSaaS_API.postman_collection.json
+```
+
+See [`TESTING.md`](TESTING.md) for detailed testing instructions.
+
+---
+
+## 📝 Environment Variables
+
+See [`.env.example`](.env.example) for all required variables.
+
+| Variable | Description |
+|----------|-------------|
+| `PORT` | Server port (default: 5000) |
+| `MONGO_URI` | MongoDB connection string |
+| `JWT_SECRET` | Secret for JWT signing |
+| `RAZORPAY_KEY_ID` | Razorpay API Key ID |
+| `RAZORPAY_KEY_SECRET` | Razorpay API Key Secret |
+| `RAZORPAY_WEBHOOK_SECRET` | Webhook verification secret |
+| `BREVO_SMTP_*` | Brevo SMTP credentials |
+| `FROM_EMAIL` | Sender email address |
+| `FRONTEND_URL` | Frontend URL for email links |
+
+---
+
+## 📄 License
 
 ISC
