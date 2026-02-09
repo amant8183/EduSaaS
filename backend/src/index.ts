@@ -23,8 +23,11 @@ app.get("/", (_req, res) => {
     });
 });
 
-// API Routes will be mounted here as we build them
-// app.use("/api/auth", authRoutes);
+// API Routes
+import authRoutes from "./routes/authRoutes";
+app.use("/api/auth", authRoutes);
+
+// Additional routes will be mounted here as we build them
 // app.use("/api/pricing", pricingRoutes);
 // app.use("/api/payment", paymentRoutes);
 // app.use("/api/user", userRoutes);
