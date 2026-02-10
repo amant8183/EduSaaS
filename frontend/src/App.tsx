@@ -16,18 +16,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminPayments from "./pages/admin/AdminPayments";
+import LandingPage from "./pages/LandingPage";
 
-// ===== Placeholder page — replaced in later phases =====
-function Placeholder({ title }: { title: string }) {
-  return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-text-primary mb-2">{title}</h1>
-        <p className="text-text-secondary text-sm">Coming soon...</p>
-      </div>
-    </div>
-  );
-}
+
 
 function App() {
   return (
@@ -40,7 +31,7 @@ function App() {
             <main>
               <Routes>
                 {/* Public routes */}
-                <Route path="/" element={<Placeholder title="Home" />} />
+                <Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
                 <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
                 <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
                 <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
