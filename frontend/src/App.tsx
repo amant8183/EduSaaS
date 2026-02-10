@@ -9,6 +9,7 @@ import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PricingPage from "./pages/PricingPage";
+import DashboardPage from "./pages/DashboardPage";
 
 // ===== Placeholder page — replaced in later phases =====
 function Placeholder({ title }: { title: string }) {
@@ -46,7 +47,7 @@ function App() {
                   path="/dashboard"
                   element={
                     <ProtectedRoute>
-                      <Placeholder title="Dashboard" />
+                      <DashboardPage />
                     </ProtectedRoute>
                   }
                 />
