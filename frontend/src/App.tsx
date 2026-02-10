@@ -3,6 +3,11 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import Navbar from "./components/layout/Navbar";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 // ===== Placeholder page — replaced in later phases =====
 function Placeholder({ title }: { title: string }) {
@@ -29,11 +34,11 @@ function App() {
                 {/* Public routes */}
                 <Route path="/" element={<Placeholder title="Home" />} />
                 <Route path="/pricing" element={<Placeholder title="Pricing" />} />
-                <Route path="/login" element={<Placeholder title="Login" />} />
-                <Route path="/register" element={<Placeholder title="Register" />} />
-                <Route path="/verify-email" element={<Placeholder title="Verify Email" />} />
-                <Route path="/forgot-password" element={<Placeholder title="Forgot Password" />} />
-                <Route path="/reset-password" element={<Placeholder title="Reset Password" />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/verify-email" element={<VerifyEmailPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
 
                 {/* Protected — User */}
                 <Route
