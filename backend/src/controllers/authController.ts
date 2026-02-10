@@ -358,7 +358,7 @@ export const getLoggedInUser = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
         const user = await User.findById(userId).select("-passwordHash -refreshTokens -verificationToken -passwordResetToken");
-        return res.json(user);
+        return res.json({ user });
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
