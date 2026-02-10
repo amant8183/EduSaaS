@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import {
@@ -35,35 +36,27 @@ export default function DashboardPage() {
     const navigate = useNavigate();
     const { user } = useAuth();
     const { showToast } = useToast();
+    const queryClient = useQueryClient();
 
-    const [summary, setSummary] = useState<DashboardSummary | null>(null);
-    const [subDetail, setSubDetail] = useState<SubscriptionDetail | null>(null);
-    const [payments, setPayments] = useState<PaymentHistoryResponse | null>(null);
-    const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState("");
     const [paymentPage, setPaymentPage] = useState(1);
 
-    // Fetch all data
-    const fetchData = useCallback(async () => {
-        try {
-            const [dash, sub, pay] = await Promise.all([
-                userService.getDashboard(),
-                userService.getSubscription(),
-                userService.getPaymentHistory(paymentPage),
-            ]);
-            setSummary(dash);
-            setSubDetail(sub);
-            setPayments(pay);
-        } catch {
-            showToast("Failed to load dashboard data", "error");
-        } finally {
-            setLoading(false);
-        }
-    }, [paymentPage, showToast]);
+    const { data: summary } = useQuery<DashboardSummary>({
+        queryKey: ["user-dashboard"],
+        queryFn: () => userService.getDashboard(),
+    });
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    const { data: subDetail } = useQuery<SubscriptionDetail>({
+        queryKey: ["user-subscription"],
+        queryFn: () => userService.getSubscription(),
+    });
+
+    const { data: payments } = useQuery<PaymentHistoryResponse>({
+        queryKey: ["user-payments", paymentPage],
+        queryFn: () => userService.getPaymentHistory(paymentPage),
+    });
+
+    const loading = !summary && !subDetail;
 
     // Toggle auto-renew
     const handleToggleAutoRenew = async () => {
@@ -71,7 +64,8 @@ export default function DashboardPage() {
         try {
             const res = await userService.toggleAutoRenew();
             showToast(res.message, "success");
-            await fetchData();
+            queryClient.invalidateQueries({ queryKey: ["user-subscription"] });
+            queryClient.invalidateQueries({ queryKey: ["user-dashboard"] });
         } catch {
             showToast("Failed to update auto-renew", "error");
         } finally {
@@ -86,7 +80,8 @@ export default function DashboardPage() {
         try {
             const res = await userService.cancelSubscription();
             showToast(res.message, "success");
-            await fetchData();
+            queryClient.invalidateQueries({ queryKey: ["user-subscription"] });
+            queryClient.invalidateQueries({ queryKey: ["user-dashboard"] });
         } catch {
             showToast("Failed to cancel subscription", "error");
         } finally {

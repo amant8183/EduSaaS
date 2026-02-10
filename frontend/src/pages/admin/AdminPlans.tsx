@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FiSave, FiDollarSign, FiPercent, FiBox } from "react-icons/fi";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
@@ -19,7 +20,7 @@ const portalLabels: Record<string, string> = {
 
 export default function AdminPlans() {
     const { showToast } = useToast();
-    const [loading, setLoading] = useState(true);
+    const queryClient = useQueryClient();
     const [saving, setSaving] = useState(false);
 
     // Editable state
@@ -30,18 +31,19 @@ export default function AdminPlans() {
     // Track if anything changed
     const [dirty, setDirty] = useState(false);
 
+    const { data: pricingData, isLoading: loading } = useQuery<AdminPricingConfig>({
+        queryKey: ["admin-pricing"],
+        queryFn: () => adminService.getPricing(),
+    });
+
+    // Seed editable state when data arrives
     useEffect(() => {
-        adminService
-            .getPricing()
-            .then((data: AdminPricingConfig) => {
-                setPortalPrices(data.portalPrices);
-                setFeaturePrices(data.featurePrices);
-                setBundleDiscounts(data.bundleDiscounts);
-            })
-            .catch(() => showToast("Failed to load pricing config", "error"))
-            .finally(() => setLoading(false));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (pricingData) {
+            setPortalPrices(pricingData.portalPrices);
+            setFeaturePrices(pricingData.featurePrices);
+            setBundleDiscounts(pricingData.bundleDiscounts);
+        }
+    }, [pricingData]);
 
     const handlePortalPriceChange = (portal: string, value: number) => {
         setPortalPrices((prev) => ({ ...prev, [portal]: value }));
@@ -84,6 +86,7 @@ export default function AdminPlans() {
 
             showToast("Pricing updated successfully!", "success");
             setDirty(false);
+            queryClient.invalidateQueries({ queryKey: ["admin-pricing"] });
         } catch {
             showToast("Failed to update pricing", "error");
         } finally {

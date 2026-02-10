@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import Navbar from "./components/layout/Navbar";
@@ -19,77 +20,86 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import AdminPlans from "./pages/admin/AdminPlans";
 import LandingPage from "./pages/LandingPage";
 
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,  // 5 minutes — data is "fresh" and served from cache
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <ToastProvider>
-          <div className="min-h-screen bg-bg-base">
-            <Navbar />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <ToastProvider>
+            <div className="min-h-screen bg-bg-base">
+              <Navbar />
 
-            <main>
-              <Routes>
-                {/* Public routes */}
-                <Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
-                <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
-                <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
-                <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
-                <Route path="/verify-email" element={<VerifyEmailPage />} />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <main>
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
+                  <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
+                  <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+                  <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
+                  <Route path="/verify-email" element={<VerifyEmailPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                  <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-                {/* Protected — User */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <PageTransition>
-                        <DashboardPage />
-                      </PageTransition>
-                    </ProtectedRoute>
-                  }
-                />
+                  {/* Protected — User */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <PageTransition>
+                          <DashboardPage />
+                        </PageTransition>
+                      </ProtectedRoute>
+                    }
+                  />
 
-                {/* Protected — Admin (nested) */}
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <PageTransition>
-                        <AdminLayout />
-                      </PageTransition>
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="users" element={<AdminUsers />} />
-                  <Route path="subscriptions" element={<AdminSubscriptions />} />
-                  <Route path="payments" element={<AdminPayments />} />
-                  <Route path="plans" element={<AdminPlans />} />
-                </Route>
+                  {/* Protected — Admin (nested) */}
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <PageTransition>
+                          <AdminLayout />
+                        </PageTransition>
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="subscriptions" element={<AdminSubscriptions />} />
+                    <Route path="payments" element={<AdminPayments />} />
+                    <Route path="plans" element={<AdminPlans />} />
+                  </Route>
 
-                {/* 404 */}
-                <Route
-                  path="*"
-                  element={
-                    <div className="min-h-[60vh] flex items-center justify-center">
-                      <div className="text-center">
-                        <h1 className="text-6xl font-bold text-text-tertiary mb-2">
-                          404
-                        </h1>
-                        <p className="text-text-secondary">Page not found</p>
+                  {/* 404 */}
+                  <Route
+                    path="*"
+                    element={
+                      <div className="min-h-[60vh] flex items-center justify-center">
+                        <div className="text-center">
+                          <h1 className="text-6xl font-bold text-text-tertiary mb-2">
+                            404
+                          </h1>
+                          <p className="text-text-secondary">Page not found</p>
+                        </div>
                       </div>
-                    </div>
-                  }
-                />
-              </Routes>
-            </main>
-          </div>
-        </ToastProvider>
-      </AuthProvider>
-    </BrowserRouter>
+                    }
+                  />
+                </Routes>
+              </main>
+            </div>
+          </ToastProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

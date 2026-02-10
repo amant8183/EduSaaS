@@ -1,31 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { adminService, type AdminSubscription } from "../../services/adminService";
-import { useToast } from "../../hooks/useToast";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Loading from "../../components/common/Loading";
 
 export default function AdminSubscriptions() {
-    const { showToast } = useToast();
-    const [subs, setSubs] = useState<AdminSubscription[]>([]);
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [statusFilter, setStatusFilter] = useState("");
-    const [loading, setLoading] = useState(true);
 
-    const fetch = useCallback(async () => {
-        setLoading(true);
-        try {
-            const data = await adminService.getSubscriptions(page, 15, statusFilter);
-            setSubs(data.subscriptions);
-            setTotalPages(data.pagination.totalPages);
-        } catch {
-            showToast("Failed to load subscriptions", "error");
-        } finally {
-            setLoading(false);
-        }
-    }, [page, statusFilter, showToast]);
+    const { data: result, isLoading: loading } = useQuery({
+        queryKey: ["admin-subscriptions", page, statusFilter],
+        queryFn: () => adminService.getSubscriptions(page, 15, statusFilter),
+    });
 
-    useEffect(() => { fetch(); }, [fetch]);
+    const subs: AdminSubscription[] = result?.subscriptions ?? [];
+    const totalPages = result?.pagination?.totalPages ?? 1;
 
     return (
         <div className="space-y-4">

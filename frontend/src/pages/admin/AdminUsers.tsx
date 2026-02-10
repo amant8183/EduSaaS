@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminService } from "../../services/adminService";
 import { useToast } from "../../hooks/useToast";
 import type { User } from "../../types";
@@ -7,27 +8,18 @@ import Loading from "../../components/common/Loading";
 
 export default function AdminUsers() {
     const { showToast } = useToast();
-    const [users, setUsers] = useState<User[]>([]);
+    const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
-    const [loading, setLoading] = useState(true);
 
-    const fetchUsers = useCallback(async () => {
-        setLoading(true);
-        try {
-            const data = await adminService.getUsers(page, 15, search, statusFilter);
-            setUsers(data.users);
-            setTotalPages(data.pagination.totalPages);
-        } catch {
-            showToast("Failed to load users", "error");
-        } finally {
-            setLoading(false);
-        }
-    }, [page, search, statusFilter, showToast]);
+    const { data: result, isLoading: loading } = useQuery({
+        queryKey: ["admin-users", page, search, statusFilter],
+        queryFn: () => adminService.getUsers(page, 15, search, statusFilter),
+    });
 
-    useEffect(() => { fetchUsers(); }, [fetchUsers]);
+    const users: User[] = result?.users ?? [];
+    const totalPages = result?.pagination?.totalPages ?? 1;
 
     const handleRoleToggle = async (userId: string, currentRole: string) => {
         const newRole = currentRole === "admin" ? "user" : "admin";
@@ -35,7 +27,7 @@ export default function AdminUsers() {
         try {
             await adminService.updateUserRole(userId, newRole as "user" | "admin");
             showToast(`Role updated to ${newRole}`, "success");
-            fetchUsers();
+            queryClient.invalidateQueries({ queryKey: ["admin-users"] });
         } catch {
             showToast("Failed to update role", "error");
         }

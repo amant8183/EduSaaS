@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
     adminService,
     type AdminDashboardResponse,
@@ -18,16 +18,10 @@ const portalLabels: Record<string, string> = {
 };
 
 export default function AdminDashboard() {
-    const [data, setData] = useState<AdminDashboardResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        adminService
-            .getDashboard()
-            .then(setData)
-            .catch(() => { })
-            .finally(() => setLoading(false));
-    }, []);
+    const { data, isLoading: loading } = useQuery<AdminDashboardResponse>({
+        queryKey: ["admin-dashboard"],
+        queryFn: () => adminService.getDashboard(),
+    });
 
     if (loading) {
         return <Loading />;

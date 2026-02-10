@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
     pricingService,
     type PricingPageData,
@@ -6,24 +7,18 @@ import {
 import type { PriceBreakdown } from "../types";
 
 export function usePricing() {
-    const [data, setData] = useState<PricingPageData | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const { data, isLoading: loading, error: queryError } = useQuery<PricingPageData>({
+        queryKey: ["pricing"],
+        queryFn: () => pricingService.getAll(),
+    });
+
+    const error = queryError ? "Failed to load pricing data" : "";
 
     const [selectedPortals, setSelectedPortals] = useState<string[]>([]);
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
     const [priceBreakdown, setPriceBreakdown] = useState<PriceBreakdown | null>(null);
     const [calculating, setCalculating] = useState(false);
-
-    // Fetch pricing data on mount
-    useEffect(() => {
-        pricingService
-            .getAll()
-            .then(setData)
-            .catch(() => setError("Failed to load pricing data"))
-            .finally(() => setLoading(false));
-    }, []);
 
     // Recalculate when selection changes
     const recalculate = useCallback(async () => {

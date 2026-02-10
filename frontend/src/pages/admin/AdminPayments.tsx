@@ -1,32 +1,21 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { adminService } from "../../services/adminService";
-import { useToast } from "../../hooks/useToast";
 import type { Payment } from "../../types";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Loading from "../../components/common/Loading";
 
 export default function AdminPayments() {
-    const { showToast } = useToast();
-    const [payments, setPayments] = useState<Payment[]>([]);
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [statusFilter, setStatusFilter] = useState("");
-    const [loading, setLoading] = useState(true);
 
-    const fetch = useCallback(async () => {
-        setLoading(true);
-        try {
-            const data = await adminService.getPayments(page, 15, statusFilter);
-            setPayments(data.payments);
-            setTotalPages(data.pagination.totalPages);
-        } catch {
-            showToast("Failed to load payments", "error");
-        } finally {
-            setLoading(false);
-        }
-    }, [page, statusFilter, showToast]);
+    const { data: result, isLoading: loading } = useQuery({
+        queryKey: ["admin-payments", page, statusFilter],
+        queryFn: () => adminService.getPayments(page, 15, statusFilter),
+    });
 
-    useEffect(() => { fetch(); }, [fetch]);
+    const payments: Payment[] = result?.payments ?? [];
+    const totalPages = result?.pagination?.totalPages ?? 1;
 
     return (
         <div className="space-y-4">
