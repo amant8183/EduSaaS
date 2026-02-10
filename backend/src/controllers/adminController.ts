@@ -2,6 +2,12 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import Subscription from "../models/Subscription";
 import Payment from "../models/Payment";
+import {
+    getFullPricingConfig,
+    updatePortalPrices,
+    updateFeaturePrices,
+    updateBundleDiscounts,
+} from "../config/pricing";
 
 /**
  * Get dashboard metrics for admin
@@ -247,6 +253,50 @@ export const updateUserRole = async (req: Request, res: Response) => {
         });
     } catch (err) {
         console.error("Error updating user role:", err);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
+/**
+ * Get current pricing configuration
+ */
+export const getPricingConfig = (_req: Request, res: Response) => {
+    try {
+        const config = getFullPricingConfig();
+        return res.json({ success: true, ...config });
+    } catch (err) {
+        console.error("Error fetching pricing config:", err);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
+/**
+ * Update pricing configuration (portal prices, feature prices, bundle discounts)
+ */
+export const updatePricingConfig = (req: Request, res: Response) => {
+    try {
+        const { portalPrices, featurePrices, bundleDiscounts } = req.body;
+
+        if (portalPrices && typeof portalPrices === "object") {
+            updatePortalPrices(portalPrices);
+        }
+
+        if (featurePrices && typeof featurePrices === "object") {
+            updateFeaturePrices(featurePrices);
+        }
+
+        if (bundleDiscounts && typeof bundleDiscounts === "object") {
+            updateBundleDiscounts(bundleDiscounts);
+        }
+
+        const updatedConfig = getFullPricingConfig();
+        return res.json({
+            success: true,
+            message: "Pricing configuration updated successfully",
+            ...updatedConfig,
+        });
+    } catch (err) {
+        console.error("Error updating pricing config:", err);
         return res.status(500).json({ message: "Server error" });
     }
 };

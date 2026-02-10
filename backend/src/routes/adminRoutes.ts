@@ -8,6 +8,8 @@ import {
     getAllPayments,
     getUserById,
     updateUserRole,
+    getPricingConfig,
+    updatePricingConfig,
 } from "../controllers/adminController";
 
 const router = express.Router();
@@ -22,5 +24,8 @@ router.get("/users/:userId", getUserById);
 router.patch("/users/:userId/role", updateUserRole);
 router.get("/subscriptions", getAllSubscriptions);
 router.get("/payments", getAllPayments);
+router.get("/pricing", getPricingConfig);
+router.put("/pricing", updatePricingConfig);
 
 export default router;
+

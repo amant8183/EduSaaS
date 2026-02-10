@@ -5,15 +5,15 @@ export const VALID_BILLING_CYCLES = ["monthly", "annual"] as const;
 export type PortalType = typeof VALID_PORTALS[number];
 export type BillingCycle = typeof VALID_BILLING_CYCLES[number];
 
-// Portal base prices (in INR per month)
-export const PORTAL_PRICES: Record<PortalType, number> = {
+// Portal base prices (in INR per month) — mutable for admin updates
+let PORTAL_PRICES: Record<PortalType, number> = {
     admin: 2000,
     teacher: 800,
     student: 400,
 };
 
-// Feature add-on prices (in INR per month)
-export const FEATURE_PRICES: Record<string, number> = {
+// Feature add-on prices (in INR per month) — mutable for admin updates
+let FEATURE_PRICES: Record<string, number> = {
     // Admin Portal Features
     fee_management: 500,
     exam_management: 400,
@@ -75,12 +75,12 @@ export const FEATURE_INFO: Record<string, { name: string; description: string }>
     exam_preparation: { name: "Exam Preparation", description: "Practice tests and preparation" },
 };
 
-// Bundle discount configurations
-export const BUNDLE_DISCOUNTS = {
+// Bundle discount configurations — mutable for admin updates
+let BUNDLE_DISCOUNTS: Record<string, number> = {
     admin_teacher: 0.15,
     teacher_student: 0.10,
     all_three: 0.20,
-} as const;
+};
 
 // Billing cycle multipliers (annual = 10 months for 12)
 export const BILLING_MULTIPLIERS: Record<BillingCycle, number> = {
@@ -99,6 +99,56 @@ export interface PriceBreakdown {
     billingCycle: BillingCycle;
     portals: { id: string; name: string; price: number }[];
     features: { id: string; name: string; price: number }[];
+}
+
+// ===== Admin getters/setters =====
+
+/** Returns the full pricing config for admin panel */
+export function getFullPricingConfig() {
+    return {
+        portalPrices: { ...PORTAL_PRICES },
+        featurePrices: Object.entries(FEATURE_PRICES).map(([id, price]) => ({
+            id,
+            name: FEATURE_INFO[id]?.name || id,
+            description: FEATURE_INFO[id]?.description || "",
+            portal: Object.entries(PORTAL_FEATURES).find(([_, feats]) => feats.includes(id))?.[0] || "",
+            price,
+        })),
+        bundleDiscounts: Object.entries(BUNDLE_DISCOUNTS).map(([id, discount]) => ({
+            id,
+            name: id === "admin_teacher" ? "Admin + Teacher Bundle"
+                : id === "teacher_student" ? "Teacher + Student Bundle"
+                    : "Complete School Bundle",
+            discount: Math.round(discount * 100),
+        })),
+    };
+}
+
+/** Update portal prices (partial updates allowed) */
+export function updatePortalPrices(updates: Partial<Record<PortalType, number>>) {
+    for (const [portal, price] of Object.entries(updates)) {
+        if ((VALID_PORTALS as readonly string[]).includes(portal) && typeof price === "number" && price >= 0) {
+            PORTAL_PRICES[portal as PortalType] = price;
+        }
+    }
+}
+
+/** Update feature prices (partial updates allowed) */
+export function updateFeaturePrices(updates: Record<string, number>) {
+    for (const [featureId, price] of Object.entries(updates)) {
+        if (featureId in FEATURE_PRICES && typeof price === "number" && price >= 0) {
+            FEATURE_PRICES[featureId] = price;
+        }
+    }
+}
+
+/** Update bundle discount percentages (input as 0-100) */
+export function updateBundleDiscounts(updates: Record<string, number>) {
+    for (const [id, pct] of Object.entries(updates)) {
+        if (id in BUNDLE_DISCOUNTS && typeof pct === "number" && pct >= 0 && pct <= 100) {
+            BUNDLE_DISCOUNTS[id] = pct / 100;
+        }
+    }
 }
 
 /**
@@ -201,8 +251,8 @@ export function getAvailableFeatures() {
  */
 export function getBundleDiscountInfo() {
     return [
-        { id: "admin_teacher", name: "Admin + Teacher Bundle", discount: BUNDLE_DISCOUNTS.admin_teacher * 100, description: "15% off Admin and Teacher portals together" },
-        { id: "teacher_student", name: "Teacher + Student Bundle", discount: BUNDLE_DISCOUNTS.teacher_student * 100, description: "10% off Teacher and Student portals together" },
-        { id: "all_three", name: "Complete School Bundle", discount: BUNDLE_DISCOUNTS.all_three * 100, description: "20% off all three portals" },
+        { id: "admin_teacher", name: "Admin + Teacher Bundle", discount: BUNDLE_DISCOUNTS.admin_teacher * 100, description: `${Math.round(BUNDLE_DISCOUNTS.admin_teacher * 100)}% off Admin and Teacher portals together` },
+        { id: "teacher_student", name: "Teacher + Student Bundle", discount: BUNDLE_DISCOUNTS.teacher_student * 100, description: `${Math.round(BUNDLE_DISCOUNTS.teacher_student * 100)}% off Teacher and Student portals together` },
+        { id: "all_three", name: "Complete School Bundle", discount: BUNDLE_DISCOUNTS.all_three * 100, description: `${Math.round(BUNDLE_DISCOUNTS.all_three * 100)}% off all three portals` },
     ];
 }
