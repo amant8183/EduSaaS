@@ -20,13 +20,18 @@ app.set("trust proxy", 1);
 app.use(cors());
 app.use(express.json({ limit: "10kb" })); // Limit payload size
 
-// Health check route
+// root route
 app.get("/", (_req, res) => {
     res.json({
         message: "SaaS Platform Backend API",
         status: "running",
         timestamp: new Date().toISOString()
     });
+});
+
+// Health check route
+app.get("/health", (req, res) => {
+    res.status(200).send("ok");
 });
 
 // API Routes
