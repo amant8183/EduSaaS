@@ -160,7 +160,7 @@ export default function PricingPage() {
                                 {data.discounts.map((d) => (
                                     <div
                                         key={d.id}
-                                        className="bg-bg-surface rounded-lg p-4 border border-border"
+                                        className="bg-bg-surface rounded-md p-4 border border-border"
                                     >
                                         <span className="inline-block bg-success/15 text-success text-xs font-bold px-2 py-0.5 rounded-full mb-2">
                                             {d.discount}% OFF

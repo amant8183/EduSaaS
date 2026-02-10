@@ -61,18 +61,15 @@ export default function Navbar() {
     return (
         <nav
             className={`sticky top-0 z-40 border-b border-border transition-shadow duration-200 ${scrolled
-                ? "bg-bg-surface shadow-md"
-                : "bg-bg-surface/90 backdrop-blur-md"
+                ? "bg-bg-surface/80 backdrop-blur-sm"
+                : "bg-bg-surface shadow-md"
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2.5 group">
-                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center transition-transform duration-150 group-hover:scale-105">
-                            <span className="text-text-inverse font-bold text-sm">E</span>
-                        </div>
-                        <span className="text-xl font-bold text-text-primary">
+                        <span className="text-xl font-bold text-text-primary tracking-tight">
                             EduSaaS
                         </span>
                     </Link>
@@ -121,13 +118,13 @@ export default function Navbar() {
                             <div className="flex items-center gap-3">
                                 <Link
                                     to="/login"
-                                    className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-150"
+                                    className="px-3 py-2 text-sm font-medium text-text-primary rounded-md hover:bg-bg-elevated transition-colors duration-150"
                                 >
-                                    Log in
+                                    Login
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-5 py-2 text-sm font-medium bg-primary text-text-inverse rounded-lg hover:bg-primary-hover active:scale-[0.98] transition-all duration-150"
+                                    className="px-3 py-2 text-sm font-medium bg-primary text-text-inverse rounded-md hover:bg-primary-hover active:scale-[0.98] transition-all duration-150"
                                 >
                                     Get Started
                                 </Link>
@@ -140,7 +137,7 @@ export default function Navbar() {
                         <ThemeToggle />
                         <button
                             onClick={() => setMobileOpen(!mobileOpen)}
-                            className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-muted transition-colors cursor-pointer"
+                            className="p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-muted transition-colors cursor-pointer"
                             aria-label={mobileOpen ? "Close menu" : "Open menu"}
                         >
                             {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
@@ -165,7 +162,7 @@ export default function Navbar() {
                     <div className="flex flex-col p-6 gap-1">
                         <Link
                             to="/pricing"
-                            className={`block px-4 py-3 rounded-lg transition-colors ${isActive("/pricing")
+                            className={`block px-4 py-3 rounded-md transition-colors ${isActive("/pricing")
                                 ? "bg-primary-light text-primary font-medium"
                                 : "text-text-secondary hover:bg-bg-muted hover:text-text-primary"
                                 }`}
@@ -176,7 +173,7 @@ export default function Navbar() {
                         {isAuthenticated && (
                             <Link
                                 to="/dashboard"
-                                className={`block px-4 py-3 rounded-lg transition-colors ${isActive("/dashboard")
+                                className={`block px-4 py-3 rounded-md transition-colors ${isActive("/dashboard")
                                     ? "bg-primary-light text-primary font-medium"
                                     : "text-text-secondary hover:bg-bg-muted hover:text-text-primary"
                                     }`}
@@ -188,7 +185,7 @@ export default function Navbar() {
                         {isAdmin && (
                             <Link
                                 to="/admin"
-                                className={`flex items-center gap-1.5 px-4 py-3 rounded-lg transition-colors ${isActive("/admin")
+                                className={`flex items-center gap-1.5 px-4 py-3 rounded-md transition-colors ${isActive("/admin")
                                     ? "bg-primary-light text-primary font-medium"
                                     : "text-text-secondary hover:bg-bg-muted hover:text-text-primary"
                                     }`}
@@ -208,7 +205,7 @@ export default function Navbar() {
                                 </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="flex items-center gap-2 px-4 py-3 rounded-lg text-error hover:bg-error-light transition-colors cursor-pointer text-left"
+                                    className="flex items-center gap-2 px-4 py-3 rounded-md text-error hover:bg-error-light transition-colors cursor-pointer text-left"
                                 >
                                     <FiLogOut size={16} />
                                     Logout
@@ -218,13 +215,13 @@ export default function Navbar() {
                             <div className="flex flex-col gap-2">
                                 <Link
                                     to="/login"
-                                    className="px-4 py-3 text-center text-sm font-medium text-text-primary rounded-lg border border-border hover:bg-bg-muted transition-colors"
+                                    className="px-4 py-3 text-center text-sm font-medium text-text-primary rounded-md border border-border hover:bg-bg-muted transition-colors"
                                 >
                                     Log in
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-4 py-3 text-center text-sm font-medium bg-primary text-text-inverse rounded-lg hover:bg-primary-hover transition-colors"
+                                    className="px-4 py-3 text-center text-sm font-medium bg-primary text-text-inverse rounded-md hover:bg-primary-hover transition-colors"
                                 >
                                     Get Started
                                 </Link>

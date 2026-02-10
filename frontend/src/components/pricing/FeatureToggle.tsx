@@ -8,7 +8,7 @@ interface Props {
 
 export default function FeatureToggle({ feature, selected, onToggle }: Props) {
     return (
-        <label className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-bg-muted/50 hover:bg-bg-muted transition-colors cursor-pointer group">
+        <label className="flex items-center justify-between gap-3 px-4 py-3 rounded-md bg-bg-muted/50 hover:bg-bg-muted transition-colors cursor-pointer group">
             <div className="flex items-center gap-3 min-w-0">
                 {/* Toggle switch */}
                 <div className="relative shrink-0">

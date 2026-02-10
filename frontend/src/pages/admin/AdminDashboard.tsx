@@ -54,7 +54,7 @@ export default function AdminDashboard() {
                     <div key={kpi.label} className="bg-bg-surface border border-border rounded-xl p-5 shadow-sm">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-sm text-text-tertiary">{kpi.label}</span>
-                            <div className={`w-9 h-9 rounded-lg ${kpi.bg} flex items-center justify-center`}>
+                            <div className={`w-9 h-9 rounded-md ${kpi.bg} flex items-center justify-center`}>
                                 <kpi.icon size={18} className={kpi.color} />
                             </div>
                         </div>
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
                     <h3 className="text-lg font-semibold text-text-primary mb-4">Subscription Status</h3>
                     <div className="flex flex-wrap gap-4">
                         {Object.entries(m.subscriptionsByStatus).map(([status, count]) => (
-                            <div key={status} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-bg-muted">
+                            <div key={status} className="flex items-center gap-2 px-4 py-2 rounded-md bg-bg-muted">
                                 <span
                                     className={`w-2.5 h-2.5 rounded-full ${status === "active" ? "bg-success" : status === "cancelled" ? "bg-error" : "bg-warning"
                                         }`}

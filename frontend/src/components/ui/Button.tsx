@@ -24,8 +24,8 @@ const variantStyles: Record<Variant, string> = {
 
 const sizeStyles: Record<Size, string> = {
     sm: "h-8 px-3 text-sm gap-1.5 rounded-md",
-    md: "h-10 px-4 text-[15px] gap-2 rounded-lg",
-    lg: "h-12 px-6 text-base gap-2.5 rounded-lg",
+    md: "h-10 px-4 text-[15px] gap-2 rounded-md",
+    lg: "h-12 px-6 text-base gap-2.5 rounded-md",
 };
 
 export default function Button({

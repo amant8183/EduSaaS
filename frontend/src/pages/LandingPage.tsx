@@ -57,7 +57,7 @@ export default function LandingPage() {
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <button
                             onClick={() => navigate("/pricing")}
-                            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-hover transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-2 px-8 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors cursor-pointer"
                         >
                             Get Started <FiArrowRight size={18} />
                         </button>
@@ -87,7 +87,7 @@ export default function LandingPage() {
                                 transition={{ delay: index * 0.1 }}
                                 className="bg-bg-surface border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
                             >
-                                <div className={`w-12 h-12 rounded-lg ${portal.bg} flex items-center justify-center mb-4`}>
+                                <div className={`w-12 h-12 rounded-md ${portal.bg} flex items-center justify-center mb-4`}>
                                     <span className="text-2xl">{portal.icon}</span>
                                 </div>
                                 <h3 className="text-xl font-bold text-text-primary mb-2">{portal.name}</h3>
@@ -124,7 +124,7 @@ export default function LandingPage() {
                     </p>
                     <button
                         onClick={() => navigate("/pricing")}
-                        className="inline-flex items-center px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-hover transition-colors cursor-pointer"
+                        className="inline-flex items-center px-8 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors cursor-pointer"
                     >
                         Create Your Account
                     </button>

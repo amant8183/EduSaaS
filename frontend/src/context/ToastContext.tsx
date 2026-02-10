@@ -85,7 +85,7 @@ function ToastItem({
 
     return (
         <div
-            className={`relative min-w-[320px] max-w-[400px] rounded-lg shadow-lg overflow-hidden ${config.bg} ${config.border}`}
+            className={`relative min-w-[320px] max-w-[400px] rounded-md shadow-lg overflow-hidden ${config.bg} ${config.border}`}
             style={{
                 animation: "toastSlideIn 300ms ease-out",
             }}

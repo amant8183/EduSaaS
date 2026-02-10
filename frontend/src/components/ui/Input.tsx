@@ -48,7 +48,7 @@ export default function Input({
                     type={isPassword && showPassword ? "text" : type}
                     className={`
             w-full h-12 bg-bg-surface text-text-primary text-[15px]
-            border rounded-lg outline-none
+            border rounded-md outline-none
             transition-all duration-150
             placeholder:text-text-tertiary
             ${icon ? "pl-10" : "pl-4"}
