@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import PricingPage from "./pages/PricingPage";
 
 // ===== Placeholder page — replaced in later phases =====
 function Placeholder({ title }: { title: string }) {
@@ -33,7 +34,7 @@ function App() {
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Placeholder title="Home" />} />
-                <Route path="/pricing" element={<Placeholder title="Pricing" />} />
+                <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />

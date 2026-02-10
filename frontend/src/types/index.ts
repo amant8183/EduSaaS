@@ -84,6 +84,8 @@ export interface PriceBreakdown {
     annualMultiplier?: number;
     total: number;
     billingCycle: "monthly" | "annual";
+    portals?: { id: string; name: string; price: number }[];
+    features?: { id: string; name: string; price: number }[];
 }
 
 // ===== Order =====
