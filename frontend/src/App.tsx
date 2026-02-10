@@ -19,6 +19,7 @@ import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminPayments from "./pages/admin/AdminPayments";
 import AdminPlans from "./pages/admin/AdminPlans";
 import LandingPage from "./pages/LandingPage";
+import { usePrefetchQueries } from "./hooks/usePrefetchQueries";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <ToastProvider>
+            <Prefetcher />
             <div className="min-h-screen bg-bg-base">
               <Navbar />
 
@@ -101,6 +103,12 @@ function App() {
       </BrowserRouter>
     </QueryClientProvider>
   );
+}
+
+/** Invisible component — just warms the cache after login */
+function Prefetcher() {
+  usePrefetchQueries();
+  return null;
 }
 
 export default App;
