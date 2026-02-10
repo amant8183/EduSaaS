@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { usePricing } from "../hooks/usePricing";
 import { useAuth } from "../hooks/useAuth";
+import { useRazorpay } from "../hooks/useRazorpay";
 import PortalCard from "../components/pricing/PortalCard";
 import FeatureToggle from "../components/pricing/FeatureToggle";
 import PricingSummary from "../components/pricing/PricingSummary";
@@ -8,6 +9,7 @@ import PricingSummary from "../components/pricing/PricingSummary";
 export default function PricingPage() {
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
+    const { checkout, loading: paymentLoading } = useRazorpay();
     const {
         data,
         loading,
@@ -22,13 +24,23 @@ export default function PricingPage() {
         toggleFeature,
     } = usePricing();
 
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
         if (!isAuthenticated) {
             navigate("/register");
             return;
         }
-        // Phase 4 will add Razorpay here
-        navigate("/dashboard");
+
+        if (selectedPortals.length === 0) return;
+
+        const success = await checkout({
+            portals: selectedPortals,
+            features: selectedFeatures,
+            billingCycle,
+        });
+
+        if (success) {
+            navigate("/dashboard");
+        }
     };
 
     // ===== Loading skeleton =====
@@ -80,8 +92,8 @@ export default function PricingPage() {
                     <button
                         onClick={() => setBillingCycle("monthly")}
                         className={`px-5 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${billingCycle === "monthly"
-                                ? "bg-primary text-text-inverse shadow-sm"
-                                : "text-text-secondary hover:text-text-primary"
+                            ? "bg-primary text-text-inverse shadow-sm"
+                            : "text-text-secondary hover:text-text-primary"
                             }`}
                     >
                         Monthly
@@ -89,8 +101,8 @@ export default function PricingPage() {
                     <button
                         onClick={() => setBillingCycle("annual")}
                         className={`px-5 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${billingCycle === "annual"
-                                ? "bg-primary text-text-inverse shadow-sm"
-                                : "text-text-secondary hover:text-text-primary"
+                            ? "bg-primary text-text-inverse shadow-sm"
+                            : "text-text-secondary hover:text-text-primary"
                             }`}
                     >
                         Annual
@@ -178,7 +190,7 @@ export default function PricingPage() {
                         <PricingSummary
                             breakdown={priceBreakdown}
                             billingCycle={billingCycle}
-                            calculating={calculating}
+                            calculating={calculating || paymentLoading}
                             onCheckout={handleCheckout}
                             isAuthenticated={isAuthenticated}
                         />
