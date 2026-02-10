@@ -4,6 +4,7 @@ import {
     FiUsers,
     FiCreditCard,
     FiPackage,
+    FiSettings,
 } from "react-icons/fi";
 
 const navItems = [
@@ -11,6 +12,7 @@ const navItems = [
     { to: "/admin/users", icon: FiUsers, label: "Users" },
     { to: "/admin/subscriptions", icon: FiPackage, label: "Subscriptions" },
     { to: "/admin/payments", icon: FiCreditCard, label: "Payments" },
+    { to: "/admin/plans", icon: FiSettings, label: "Plans" },
 ];
 
 export default function AdminLayout() {

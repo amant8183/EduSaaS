@@ -83,4 +83,38 @@ export const adminService = {
 
     updateUserRole: (userId: string, role: "user" | "admin") =>
         api.patch<{ success: boolean; message: string }>(`/admin/users/${userId}/role`, { role }).then((r) => r.data),
+
+    getPricing: () =>
+        api.get<AdminPricingConfig>("/admin/pricing").then((r) => r.data),
+
+    updatePricing: (payload: AdminPricingUpdatePayload) =>
+        api.put<AdminPricingConfig & { message: string }>("/admin/pricing", payload).then((r) => r.data),
 };
+
+// ===== Pricing config types =====
+export interface AdminFeaturePrice {
+    id: string;
+    name: string;
+    description: string;
+    portal: string;
+    price: number;
+}
+
+export interface AdminBundleDiscount {
+    id: string;
+    name: string;
+    discount: number; // 0-100
+}
+
+export interface AdminPricingConfig {
+    success: boolean;
+    portalPrices: Record<string, number>;
+    featurePrices: AdminFeaturePrice[];
+    bundleDiscounts: AdminBundleDiscount[];
+}
+
+export interface AdminPricingUpdatePayload {
+    portalPrices?: Record<string, number>;
+    featurePrices?: Record<string, number>;
+    bundleDiscounts?: Record<string, number>;
+}

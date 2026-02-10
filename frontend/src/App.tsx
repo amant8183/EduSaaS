@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminPayments from "./pages/admin/AdminPayments";
+import AdminPlans from "./pages/admin/AdminPlans";
 import LandingPage from "./pages/LandingPage";
 
 
@@ -66,6 +67,7 @@ function App() {
                   <Route path="users" element={<AdminUsers />} />
                   <Route path="subscriptions" element={<AdminSubscriptions />} />
                   <Route path="payments" element={<AdminPayments />} />
+                  <Route path="plans" element={<AdminPlans />} />
                 </Route>
 
                 {/* 404 */}
