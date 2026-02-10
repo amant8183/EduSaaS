@@ -10,6 +10,11 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PricingPage from "./pages/PricingPage";
 import DashboardPage from "./pages/DashboardPage";
+import AdminLayout from "./components/layout/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
+import AdminPayments from "./pages/admin/AdminPayments";
 
 // ===== Placeholder page — replaced in later phases =====
 function Placeholder({ title }: { title: string }) {
@@ -52,39 +57,20 @@ function App() {
                   }
                 />
 
-                {/* Protected — Admin */}
+                {/* Protected — Admin (nested) */}
                 <Route
                   path="/admin"
                   element={
                     <ProtectedRoute adminOnly>
-                      <Placeholder title="Admin Dashboard" />
+                      <AdminLayout />
                     </ProtectedRoute>
                   }
-                />
-                <Route
-                  path="/admin/users"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <Placeholder title="Admin Users" />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/payments"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <Placeholder title="Admin Payments" />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/subscriptions"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <Placeholder title="Admin Subscriptions" />
-                    </ProtectedRoute>
-                  }
-                />
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="users" element={<AdminUsers />} />
+                  <Route path="subscriptions" element={<AdminSubscriptions />} />
+                  <Route path="payments" element={<AdminPayments />} />
+                </Route>
 
                 {/* 404 */}
                 <Route
