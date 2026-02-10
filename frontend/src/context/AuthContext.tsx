@@ -37,8 +37,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .getMe()
             .then(({ user }) => setUser(user))
             .catch(() => {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
+                // Don't clear tokens here — the api interceptor
+                // handles 401 → refresh → clear on failure automatically.
             })
             .finally(() => setLoading(false));
     }, []);

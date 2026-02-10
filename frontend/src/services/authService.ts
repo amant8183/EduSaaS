@@ -46,7 +46,7 @@ export const authService = {
     async refreshToken(
         refreshToken: string
     ): Promise<{ accessToken: string; refreshToken?: string }> {
-        const { data } = await api.post("/auth/refresh", { refreshToken });
+        const { data } = await api.post("/auth/refresh-token", { refreshToken });
         return data;
     },
 
@@ -56,6 +56,8 @@ export const authService = {
 
     async getMe(): Promise<{ user: User }> {
         const { data } = await api.get("/auth/me");
-        return data;
+        // Handle both wrapped { user } (new) and unwrapped (old production) responses
+        const user = data.user ?? data;
+        return { user };
     },
 };
