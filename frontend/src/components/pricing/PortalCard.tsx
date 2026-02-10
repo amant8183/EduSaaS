@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiCheck } from "react-icons/fi";
 import type { Portal } from "../../services/pricingService";
 
@@ -7,6 +8,7 @@ interface Props {
     onToggle: () => void;
 }
 
+// ... icons and colors remain same ...
 const portalIcons: Record<string, string> = {
     admin: "🏫",
     teacher: "👩‍🏫",
@@ -35,11 +37,13 @@ export default function PortalCard({ portal, selected, onToggle }: Props) {
     const colors = portalColors[portal.id] || portalColors.admin;
 
     return (
-        <button
+        <motion.button
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
             onClick={onToggle}
             className={`
         relative w-full text-left rounded-xl border-2 p-6
-        transition-all duration-200 cursor-pointer group
+        transition-colors duration-200 cursor-pointer group
         ${selected
                     ? `${colors.ring} ring-2 border-transparent shadow-lg ${colors.bg}`
                     : "border-border hover:border-text-tertiary hover:shadow-md"
@@ -93,6 +97,6 @@ export default function PortalCard({ portal, selected, onToggle }: Props) {
                     </span>
                 </div>
             )}
-        </button>
+        </motion.button>
     );
 }

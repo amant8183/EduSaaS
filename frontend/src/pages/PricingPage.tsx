@@ -5,6 +5,7 @@ import { useRazorpay } from "../hooks/useRazorpay";
 import PortalCard from "../components/pricing/PortalCard";
 import FeatureToggle from "../components/pricing/FeatureToggle";
 import PricingSummary from "../components/pricing/PricingSummary";
+import Loading from "../components/common/Loading";
 
 export default function PricingPage() {
     const navigate = useNavigate();
@@ -45,14 +46,7 @@ export default function PricingPage() {
 
     // ===== Loading skeleton =====
     if (loading) {
-        return (
-            <div className="min-h-[60vh] flex items-center justify-center">
-                <div className="flex items-center gap-3 text-text-secondary">
-                    <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                    Loading pricing...
-                </div>
-            </div>
-        );
+        return <Loading />;
     }
 
     if (error || !data) {

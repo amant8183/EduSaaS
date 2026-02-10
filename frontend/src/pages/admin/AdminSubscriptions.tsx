@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { adminService, type AdminSubscription } from "../../services/adminService";
 import { useToast } from "../../hooks/useToast";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Loading from "../../components/common/Loading";
 
 export default function AdminSubscriptions() {
     const { showToast } = useToast();
@@ -44,8 +45,8 @@ export default function AdminSubscriptions() {
 
             <div className="bg-bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
                 {loading ? (
-                    <div className="flex items-center justify-center py-16">
-                        <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <div className="py-16">
+                        <Loading />
                     </div>
                 ) : subs.length === 0 ? (
                     <p className="text-center py-12 text-text-tertiary text-sm">No subscriptions found</p>
@@ -84,8 +85,8 @@ export default function AdminSubscriptions() {
                                         <td className="py-3 px-4 text-text-primary font-medium">₹{s.amount.toLocaleString()}</td>
                                         <td className="py-3 px-4">
                                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${s.status === "active" ? "bg-success/15 text-success"
-                                                    : s.status === "cancelled" ? "bg-error/15 text-error"
-                                                        : "bg-warning/15 text-warning"
+                                                : s.status === "cancelled" ? "bg-error/15 text-error"
+                                                    : "bg-warning/15 text-warning"
                                                 }`}>
                                                 {s.status}
                                             </span>

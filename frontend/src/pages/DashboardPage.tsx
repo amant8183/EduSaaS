@@ -22,6 +22,7 @@ import {
     FiChevronLeft,
     FiChevronRight,
 } from "react-icons/fi";
+import Loading from "../components/common/Loading";
 
 // Portal display metadata
 const portalMeta: Record<string, { label: string; icon: string; color: string }> = {
@@ -95,14 +96,7 @@ export default function DashboardPage() {
 
     // Loading skeleton
     if (loading) {
-        return (
-            <div className="min-h-[60vh] flex items-center justify-center">
-                <div className="flex items-center gap-3 text-text-secondary">
-                    <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                    Loading dashboard...
-                </div>
-            </div>
-        );
+        return <Loading />;
     }
 
     const sub = subDetail?.subscription;
@@ -303,10 +297,10 @@ export default function DashboardPage() {
                                             <td className="py-3 px-2">
                                                 <span
                                                     className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.status === "success"
-                                                            ? "bg-success/15 text-success"
-                                                            : p.status === "failed"
-                                                                ? "bg-error/15 text-error"
-                                                                : "bg-warning/15 text-warning"
+                                                        ? "bg-success/15 text-success"
+                                                        : p.status === "failed"
+                                                            ? "bg-error/15 text-error"
+                                                            : "bg-warning/15 text-warning"
                                                         }`}
                                                 >
                                                     {p.status}

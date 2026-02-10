@@ -9,6 +9,7 @@ import {
     FiDollarSign,
     FiTrendingUp,
 } from "react-icons/fi";
+import Loading from "../../components/common/Loading";
 
 const portalLabels: Record<string, string> = {
     admin: "Admin Portal",
@@ -29,11 +30,7 @@ export default function AdminDashboard() {
     }, []);
 
     if (loading) {
-        return (
-            <div className="flex items-center justify-center py-20">
-                <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
+        return <Loading />;
     }
 
     if (!data) {

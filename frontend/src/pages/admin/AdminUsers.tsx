@@ -3,6 +3,7 @@ import { adminService } from "../../services/adminService";
 import { useToast } from "../../hooks/useToast";
 import type { User } from "../../types";
 import { FiSearch, FiChevronLeft, FiChevronRight, FiShield } from "react-icons/fi";
+import Loading from "../../components/common/Loading";
 
 export default function AdminUsers() {
     const { showToast } = useToast();
@@ -68,8 +69,8 @@ export default function AdminUsers() {
             {/* Table */}
             <div className="bg-bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
                 {loading ? (
-                    <div className="flex items-center justify-center py-16">
-                        <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <div className="py-16">
+                        <Loading />
                     </div>
                 ) : users.length === 0 ? (
                     <p className="text-center py-12 text-text-tertiary text-sm">No users found</p>

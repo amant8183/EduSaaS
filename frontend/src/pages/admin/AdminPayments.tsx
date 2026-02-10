@@ -3,6 +3,7 @@ import { adminService } from "../../services/adminService";
 import { useToast } from "../../hooks/useToast";
 import type { Payment } from "../../types";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Loading from "../../components/common/Loading";
 
 export default function AdminPayments() {
     const { showToast } = useToast();
@@ -45,8 +46,8 @@ export default function AdminPayments() {
 
             <div className="bg-bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
                 {loading ? (
-                    <div className="flex items-center justify-center py-16">
-                        <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <div className="py-16">
+                        <Loading />
                     </div>
                 ) : payments.length === 0 ? (
                     <p className="text-center py-12 text-text-tertiary text-sm">No payments found</p>
@@ -83,8 +84,8 @@ export default function AdminPayments() {
                                         </td>
                                         <td className="py-3 px-4">
                                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${p.status === "success" ? "bg-success/15 text-success"
-                                                    : p.status === "failed" ? "bg-error/15 text-error"
-                                                        : "bg-warning/15 text-warning"
+                                                : p.status === "failed" ? "bg-error/15 text-error"
+                                                    : "bg-warning/15 text-warning"
                                                 }`}>
                                                 {p.status}
                                             </span>

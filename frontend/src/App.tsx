@@ -11,6 +11,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PricingPage from "./pages/PricingPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminLayout from "./components/layout/AdminLayout";
+import PageTransition from "./components/layout/PageTransition";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
@@ -40,9 +41,9 @@ function App() {
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Placeholder title="Home" />} />
-                <Route path="/pricing" element={<PricingPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
+                <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+                <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -52,7 +53,9 @@ function App() {
                   path="/dashboard"
                   element={
                     <ProtectedRoute>
-                      <DashboardPage />
+                      <PageTransition>
+                        <DashboardPage />
+                      </PageTransition>
                     </ProtectedRoute>
                   }
                 />
@@ -62,7 +65,9 @@ function App() {
                   path="/admin"
                   element={
                     <ProtectedRoute adminOnly>
-                      <AdminLayout />
+                      <PageTransition>
+                        <AdminLayout />
+                      </PageTransition>
                     </ProtectedRoute>
                   }
                 >
