@@ -109,10 +109,10 @@ export default function LandingPage() {
 
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <button
-                            onClick={() => navigate("/pricing")}
+                            onClick={() => navigate("/register")}
                             className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl bg-primary text-white font-semibold text-base hover:bg-primary-hover transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98]"
                         >
-                            Get Started Free
+                            Get Started
                             <FiArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
                         </button>
                         <button

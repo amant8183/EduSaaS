@@ -151,7 +151,8 @@ export default function Navbar() {
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-3 py-2 text-sm font-medium bg-primary text-text-inverse rounded-xl hover:bg-primary-hover active:scale-[0.98] transition-all duration-150 shadow-sm"
+                                    className="px-4 py-2 text-sm font-semibold text-white rounded-lg hover:scale-105 active:scale-95 transition-all duration-150 shadow-[0_2px_8px_rgba(139,124,246,0.4)] border border-white/20"
+                                    style={{ background: "linear-gradient(145deg, #A99CF7 0%, #8B7CF6 35%, #7565E0 70%, #6554CC 100%)" }}
                                 >
                                     Get Started
                                 </Link>
