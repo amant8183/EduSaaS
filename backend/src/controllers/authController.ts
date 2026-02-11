@@ -61,13 +61,10 @@ export const register = async (req: Request, res: Response) => {
             verificationTokenExpiry: new Date(Date.now() + VERIFICATION_TOKEN_EXPIRY),
         });
 
-        // Send verification email
-        try {
-            await sendVerificationEmail(email, name, verificationToken);
-        } catch (emailError) {
-            console.error("Failed to send verification email:", emailError);
-            // Continue anyway - user can request resend
-        }
+        // Send verification email (fire-and-forget — don't block the response)
+        sendVerificationEmail(email, name, verificationToken).catch((emailError) =>
+            console.error("Failed to send verification email:", emailError)
+        );
 
         return res.status(201).json({
             message: "User created successfully. Please check your email to verify your account."
@@ -138,11 +135,9 @@ export const resendVerification = async (req: Request, res: Response) => {
         user.verificationTokenExpiry = new Date(Date.now() + VERIFICATION_TOKEN_EXPIRY);
         await user.save();
 
-        try {
-            await sendVerificationEmail(email, user.name, verificationToken);
-        } catch (emailError) {
-            console.error("Failed to send verification email:", emailError);
-        }
+        sendVerificationEmail(email, user.name, verificationToken).catch((emailError) =>
+            console.error("Failed to send verification email:", emailError)
+        );
 
         return res.json({ message: "If an account exists, a verification email will be sent." });
     } catch (err) {
@@ -234,11 +229,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
         user.passwordResetTokenExpiry = new Date(Date.now() + PASSWORD_RESET_EXPIRY);
         await user.save();
 
-        try {
-            await sendPasswordResetEmail(email, user.name, resetToken);
-        } catch (emailError) {
-            console.error("Failed to send password reset email:", emailError);
-        }
+        sendPasswordResetEmail(email, user.name, resetToken).catch((emailError) =>
+            console.error("Failed to send password reset email:", emailError)
+        );
 
         return res.json({ message: "If an account exists, a password reset email will be sent." });
     } catch (err) {
