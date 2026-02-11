@@ -6,16 +6,6 @@ const smtpPort = parseInt(process.env.BREVO_SMTP_PORT || "587");
 const smtpUser = process.env.BREVO_SMTP_USER;
 const smtpPass = process.env.BREVO_SMTP_PASS;
 
-// Debug: log SMTP config on startup (remove after fixing)
-console.log("SMTP Config:", {
-    host: smtpHost,
-    port: smtpPort,
-    user: smtpUser,
-    passLength: smtpPass?.length,
-    passStart: smtpPass?.substring(0, 10),
-    passEnd: smtpPass?.substring((smtpPass?.length || 0) - 6),
-});
-
 const transporter = nodemailer.createTransport({
     host: smtpHost,
     port: smtpPort,
@@ -24,6 +14,9 @@ const transporter = nodemailer.createTransport({
         user: smtpUser,
         pass: smtpPass,
     },
+    connectionTimeout: 10000, // 10s to connect
+    greetingTimeout: 10000,   // 10s for greeting
+    socketTimeout: 10000,     // 10s socket idle
 });
 
 const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@saasplatform.com";
