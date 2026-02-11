@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/layout/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
+import VerifyEmailCallbackPage from "./pages/VerifyEmailCallbackPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PricingPage from "./pages/PricingPage";
@@ -48,6 +49,7 @@ function App() {
                   <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
                   <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
                   <Route path="/verify-email" element={<VerifyEmailPage />} />
+                  <Route path="/auth/verify" element={<VerifyEmailCallbackPage />} />
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                   <Route path="/reset-password" element={<ResetPasswordPage />} />
 
