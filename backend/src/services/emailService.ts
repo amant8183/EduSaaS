@@ -27,7 +27,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@saasplatform.com";
-const APP_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const APP_URL = (process.env.FRONTEND_URL || "http://localhost:3000").replace(/\/+$/, "");
 
 export const sendVerificationEmail = async (to: string, name: string, token: string) => {
     const verificationUrl = `${APP_URL}/auth/verify?token=${token}`;
