@@ -142,29 +142,49 @@ export const verifyPayment = async (req: Request, res: Response) => {
             endDate.setMonth(endDate.getMonth() + 1);
         }
 
-        // Create or update subscription
-        const subscription = await Subscription.create({
-            userId,
-            orderId: razorpay_order_id,
-            portals: order.selectedPortals,
-            features: order.selectedFeatures,
-            amount: order.amount,
-            billingCycle: order.billingCycle,
-            startDate,
-            endDate,
-            status: "active",
-        });
+        // Check for existing active subscription and merge portals
+        let subscription = await Subscription.findOne({ userId, status: "active" });
+
+        if (subscription) {
+            // Merge new portals and features into existing subscription
+            const mergedPortals = [...new Set([...subscription.portals, ...order.selectedPortals])];
+            const mergedFeatures = [...new Set([...subscription.features, ...order.selectedFeatures])];
+            subscription.portals = mergedPortals;
+            subscription.features = mergedFeatures;
+            subscription.amount += order.amount;
+            subscription.orderId = razorpay_order_id;
+            // Extend end date if needed
+            if (endDate > subscription.endDate) {
+                subscription.endDate = endDate;
+            }
+            await subscription.save();
+        } else {
+            // No active subscription — create a new one
+            subscription = await Subscription.create({
+                userId,
+                orderId: razorpay_order_id,
+                portals: order.selectedPortals,
+                features: order.selectedFeatures,
+                amount: order.amount,
+                billingCycle: order.billingCycle,
+                startDate,
+                endDate,
+                status: "active",
+            });
+        }
 
         // Update payment with subscription ID
         payment.subscriptionId = subscription._id;
         await payment.save();
 
-        // Update user's subscription status and portals
+        // Update user — merge portals/features instead of replacing
         await User.findByIdAndUpdate(userId, {
             subscriptionStatus: "active",
             currentSubscriptionId: subscription._id,
-            purchasedPortals: order.selectedPortals,
-            enabledFeatures: order.selectedFeatures,
+            $addToSet: {
+                purchasedPortals: { $each: order.selectedPortals },
+                enabledFeatures: { $each: order.selectedFeatures },
+            },
         });
 
         // Get user for email
