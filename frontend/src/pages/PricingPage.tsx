@@ -19,7 +19,7 @@ const fadeUp: Variants = {
 
 export default function PricingPage() {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const { checkout, loading: paymentLoading } = useRazorpay();
     const {
         data,
@@ -33,7 +33,7 @@ export default function PricingPage() {
         calculating,
         togglePortal,
         toggleFeature,
-    } = usePricing();
+    } = usePricing(user?.purchasedPortals);
 
     const handleCheckout = async () => {
         if (!isAuthenticated) {
@@ -155,15 +155,20 @@ export default function PricingPage() {
                             viewport={{ once: true, margin: "-60px" }}
                             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"
                         >
-                            {data.portals.map((portal, i) => (
-                                <motion.div key={portal.id} custom={i} variants={fadeUp}>
-                                    <PortalCard
-                                        portal={portal}
-                                        selected={selectedPortals.includes(portal.id)}
-                                        onToggle={() => togglePortal(portal.id)}
-                                    />
-                                </motion.div>
-                            ))}
+                            {data.portals.map((portal, i) => {
+                                const isOwned = user?.purchasedPortals?.includes(portal.id) ?? false;
+                                return (
+                                    <motion.div key={portal.id} custom={i} variants={fadeUp}>
+                                        <PortalCard
+                                            portal={portal}
+                                            selected={selectedPortals.includes(portal.id)}
+                                            onToggle={() => togglePortal(portal.id)}
+                                            billingCycle={billingCycle}
+                                            owned={isOwned}
+                                        />
+                                    </motion.div>
+                                );
+                            })}
                         </motion.div>
 
                         {/* ── Feature Add-ons ── */}

@@ -6,7 +6,7 @@ import {
 } from "../services/pricingService";
 import type { PriceBreakdown } from "../types";
 
-export function usePricing() {
+export function usePricing(purchasedPortals: string[] = []) {
     const { data, isLoading: loading, error: queryError } = useQuery<PricingPageData>({
         queryKey: ["pricing"],
         queryFn: () => pricingService.getAll(),
@@ -60,6 +60,11 @@ export function usePricing() {
     const togglePortal = useCallback(
         (portalId: string) => {
             setSelectedPortals((prev) => {
+                // Prevent selecting already-owned portals
+                if (!prev.includes(portalId) && purchasedPortals.includes(portalId)) {
+                    return prev;
+                }
+
                 const next = prev.includes(portalId)
                     ? prev.filter((p) => p !== portalId)
                     : [...prev, portalId];
@@ -77,7 +82,7 @@ export function usePricing() {
                 return next;
             });
         },
-        [data]
+        [data, purchasedPortals]
     );
 
     // Toggle a feature

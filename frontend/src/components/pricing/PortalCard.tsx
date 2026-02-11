@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
-import { FiCheck } from "react-icons/fi";
+import { FiCheck, FiLock } from "react-icons/fi";
 import type { Portal } from "../../services/pricingService";
 
 interface Props {
     portal: Portal;
     selected: boolean;
     onToggle: () => void;
+    billingCycle: "monthly" | "annual";
+    owned?: boolean;
 }
 
 const portalIcons: Record<string, string> = {
@@ -38,25 +40,45 @@ const portalColors: Record<string, { ring: string; bg: string; badge: string; gl
     },
 };
 
-export default function PortalCard({ portal, selected, onToggle }: Props) {
+export default function PortalCard({ portal, selected, onToggle, billingCycle, owned }: Props) {
     const colors = portalColors[portal.id] || portalColors.admin;
+
+    // Calculate displayed price based on billing cycle
+    const isAnnual = billingCycle === "annual";
+    const annualTotal = portal.basePrice * 10; // 10 months (save 2 months)
+    const displayPrice = isAnnual ? Math.round(annualTotal / 12) : portal.basePrice;
 
     return (
         <motion.button
-            whileHover={{ y: -4 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onToggle}
+            whileHover={owned ? {} : { y: -4 }}
+            whileTap={owned ? {} : { scale: 0.98 }}
+            onClick={owned ? undefined : onToggle}
+            disabled={owned}
             className={`
                 relative w-full text-left rounded-2xl border-2 p-6
-                transition-all duration-300 cursor-pointer group
-                ${selected
+                transition-all duration-300 group
+                ${owned
+                    ? "opacity-60 cursor-not-allowed border-border"
+                    : "cursor-pointer"
+                }
+                ${!owned && selected
                     ? `${colors.ring} ring-2 border-transparent ${colors.glow} ${colors.bg}`
-                    : `border-border hover:${colors.borderAccent} hover:shadow-md`
+                    : !owned
+                        ? `border-border hover:${colors.borderAccent} hover:shadow-md`
+                        : ""
                 }
             `}
         >
+            {/* Owned badge */}
+            {owned && (
+                <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-success/15 text-success text-xs font-semibold">
+                    <FiLock size={10} />
+                    Owned
+                </span>
+            )}
+
             {/* Selected check */}
-            {selected && (
+            {selected && !owned && (
                 <span className="absolute top-4 right-4 w-7 h-7 rounded-full bg-primary flex items-center justify-center shadow-md">
                     <FiCheck size={14} className="text-white" strokeWidth={3} />
                 </span>
@@ -78,9 +100,14 @@ export default function PortalCard({ portal, selected, onToggle }: Props) {
             {/* Price */}
             <div className="mb-5 pb-5 border-b border-border">
                 <span className="text-3xl font-extrabold text-text-primary">
-                    ₹{portal.basePrice.toLocaleString()}
+                    ₹{displayPrice.toLocaleString()}
                 </span>
                 <span className="text-sm text-text-tertiary ml-1">/mo</span>
+                {isAnnual && (
+                    <p className="text-xs text-success mt-1 font-medium">
+                        ₹{annualTotal.toLocaleString()}/yr · Save ₹{(portal.basePrice * 12 - annualTotal).toLocaleString()}
+                    </p>
+                )}
             </div>
 
             {/* Core features */}
