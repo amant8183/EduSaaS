@@ -199,6 +199,7 @@ export const login = async (req: Request, res: Response) => {
                 email: user.email,
                 role: user.role,
                 subscriptionStatus: user.subscriptionStatus,
+                purchasedPortals: user.purchasedPortals || [],
             },
         });
     } catch (err) {
