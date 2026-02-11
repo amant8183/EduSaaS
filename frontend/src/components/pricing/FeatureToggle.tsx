@@ -8,7 +8,12 @@ interface Props {
 
 export default function FeatureToggle({ feature, selected, onToggle }: Props) {
     return (
-        <label className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-bg-muted/50 hover:bg-bg-muted transition-colors cursor-pointer group">
+        <label
+            className={`flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border transition-all duration-200 cursor-pointer group ${selected
+                    ? "bg-primary/5 border-primary/20 shadow-sm"
+                    : "bg-bg-surface border-border hover:border-text-tertiary hover:shadow-sm"
+                }`}
+        >
             <div className="flex items-center gap-3 min-w-0">
                 {/* Toggle switch */}
                 <div className="relative shrink-0">
@@ -40,7 +45,7 @@ export default function FeatureToggle({ feature, selected, onToggle }: Props) {
             </div>
 
             {/* Price */}
-            <span className="text-sm font-semibold text-text-secondary shrink-0">
+            <span className={`text-sm font-semibold shrink-0 ${selected ? "text-primary" : "text-text-secondary"}`}>
                 +₹{feature.price.toLocaleString()}/mo
             </span>
         </label>

@@ -1,11 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
-import { FiLock, FiCheckCircle } from "react-icons/fi";
+import { motion } from "framer-motion";
+import { FiLock, FiCheckCircle, FiAlertTriangle } from "react-icons/fi";
 import { authService } from "../services/authService";
 import { useToast } from "../hooks/useToast";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import Card from "../components/ui/Card";
 import type { ApiError } from "../types";
 
 export default function ResetPasswordPage() {
@@ -52,91 +52,121 @@ export default function ResetPasswordPage() {
         }
     };
 
+    // ── Shared wrapper ──
+    const Wrapper = ({ children }: { children: React.ReactNode }) => (
+        <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden relative">
+            <div className="absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/8 blur-[120px]" />
+                <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-accent/6 blur-[100px]" />
+            </div>
+            <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="w-full max-w-md"
+            >
+                {children}
+            </motion.div>
+        </div>
+    );
+
+    // ── Invalid token ──
     if (!token) {
         return (
-            <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
-                <Card padding="lg">
-                    <div className="text-center max-w-sm">
-                        <h1 className="text-2xl font-bold text-text-primary mb-2">Invalid Link</h1>
-                        <p className="text-text-secondary mb-6">
-                            This password reset link is invalid or has expired.
-                        </p>
-                        <Button onClick={() => navigate("/forgot-password")} fullWidth>
-                            Request New Link
-                        </Button>
+            <Wrapper>
+                <div className="relative bg-bg-surface border border-border rounded-2xl p-8 shadow-sm overflow-hidden text-center">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-warning to-error" />
+                    <div className="mx-auto w-16 h-16 rounded-2xl bg-warning/10 flex items-center justify-center mb-6 mt-1">
+                        <FiAlertTriangle size={28} className="text-warning" />
                     </div>
-                </Card>
-            </div>
+                    <h1 className="text-2xl font-extrabold text-text-primary mb-2">Invalid Link</h1>
+                    <p className="text-text-secondary mb-6">
+                        This password reset link is invalid or has expired.
+                    </p>
+                    <Button onClick={() => navigate("/forgot-password")} fullWidth>
+                        Request New Link
+                    </Button>
+                </div>
+            </Wrapper>
         );
     }
 
+    // ── Success state ──
     if (success) {
         return (
-            <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
-                <Card padding="lg">
-                    <div className="text-center max-w-sm">
-                        <div className="mx-auto w-16 h-16 rounded-full bg-success-light flex items-center justify-center mb-6">
-                            <FiCheckCircle size={28} className="text-success" />
-                        </div>
-                        <h1 className="text-2xl font-bold text-text-primary mb-2">
-                            Password Reset!
-                        </h1>
-                        <p className="text-text-secondary mb-6">
-                            Your password has been updated successfully.
-                        </p>
-                        <Link to="/login">
-                            <Button fullWidth>Sign In</Button>
-                        </Link>
+            <Wrapper>
+                <div className="relative bg-bg-surface border border-border rounded-2xl p-8 shadow-sm overflow-hidden text-center">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-success to-accent" />
+                    <div className="mx-auto w-16 h-16 rounded-2xl bg-success/10 flex items-center justify-center mb-6 mt-1">
+                        <FiCheckCircle size={28} className="text-success" />
                     </div>
-                </Card>
-            </div>
+                    <h1 className="text-2xl font-extrabold text-text-primary mb-2">
+                        Password Reset!
+                    </h1>
+                    <p className="text-text-secondary mb-6">
+                        Your password has been updated successfully.
+                    </p>
+                    <Link to="/login">
+                        <Button fullWidth>Sign In</Button>
+                    </Link>
+                </div>
+            </Wrapper>
         );
     }
 
+    // ── Form ──
     return (
-        <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-text-primary mb-2">
-                        Set new password
-                    </h1>
-                    <p className="text-text-secondary">
-                        Enter your new password below
-                    </p>
+        <Wrapper>
+            {/* Header */}
+            <div className="text-center mb-8">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
+                    <FiLock size={24} className="text-primary" />
                 </div>
-
-                <Card padding="lg">
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        <Input
-                            label="New Password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            icon={<FiLock size={18} />}
-                            error={errors.password}
-                            required
-                            autoComplete="new-password"
-                        />
-
-                        <Input
-                            label="Confirm New Password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            icon={<FiLock size={18} />}
-                            error={errors.confirm}
-                            required
-                            autoComplete="new-password"
-                        />
-
-                        <Button type="submit" fullWidth loading={loading} size="lg">
-                            Reset Password
-                        </Button>
-                    </form>
-                </Card>
+                <h1 className="text-3xl font-extrabold text-text-primary mb-2">
+                    Set new{" "}
+                    <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
+                        password
+                    </span>
+                </h1>
+                <p className="text-text-secondary">
+                    Enter your new password below
+                </p>
             </div>
-        </div>
+
+            {/* Card */}
+            <div className="relative bg-bg-surface border border-border rounded-2xl p-7 shadow-sm overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary to-accent" />
+
+                <form onSubmit={handleSubmit} className="space-y-5 mt-1">
+                    <Input
+                        label="New Password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        icon={<FiLock size={18} />}
+                        error={errors.password}
+                        required
+                        autoComplete="new-password"
+                    />
+
+                    <Input
+                        label="Confirm New Password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        icon={<FiLock size={18} />}
+                        error={errors.confirm}
+                        required
+                        autoComplete="new-password"
+                    />
+
+                    <Button type="submit" fullWidth loading={loading} size="lg">
+                        Reset Password
+                    </Button>
+                </form>
+            </div>
+        </Wrapper>
     );
 }

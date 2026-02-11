@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { motion, type Variants } from "framer-motion";
 import { FiSave, FiDollarSign, FiPercent, FiBox } from "react-icons/fi";
-import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Loading from "../../components/common/Loading";
 import { useToast } from "../../hooks/useToast";
@@ -16,6 +16,15 @@ const portalLabels: Record<string, string> = {
     admin: "🏫 School Admin",
     teacher: "👩‍🏫 Teacher",
     student: "🎓 Student",
+};
+
+const fadeUp: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        transition: { delay: i * 0.08, duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+    }),
 };
 
 export default function AdminPlans() {
@@ -106,10 +115,18 @@ export default function AdminPlans() {
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="flex items-center justify-between"
+            >
                 <div>
-                    <h1 className="text-2xl font-bold text-text-primary">
-                        Plans & Pricing
+                    <h1 className="text-2xl font-extrabold text-text-primary">
+                        Plans &{" "}
+                        <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
+                            Pricing
+                        </span>
                     </h1>
                     <p className="text-sm text-text-tertiary mt-1">
                         Manage portal prices, feature add-ons, and bundle discounts
@@ -123,15 +140,23 @@ export default function AdminPlans() {
                 >
                     Save Changes
                 </Button>
-            </div>
+            </motion.div>
 
             {/* ── Portal Base Prices ── */}
-            <Card>
-                <div className="flex items-center gap-2 mb-5">
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <motion.div
+                custom={0}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                className="relative bg-bg-surface border border-border rounded-2xl p-6 shadow-sm overflow-hidden"
+            >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary to-accent" />
+
+                <div className="flex items-center gap-2.5 mb-5 mt-1">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <FiDollarSign size={16} className="text-primary" />
                     </div>
-                    <h2 className="text-lg font-semibold text-text-primary">
+                    <h2 className="text-lg font-bold text-text-primary">
                         Portal Base Prices
                     </h2>
                     <span className="text-xs text-text-tertiary ml-1">
@@ -143,9 +168,9 @@ export default function AdminPlans() {
                     {Object.entries(portalPrices).map(([portal, price]) => (
                         <div
                             key={portal}
-                            className="border border-border rounded-lg p-4 hover:border-primary/30 transition-colors"
+                            className="border border-border rounded-xl p-4 hover:border-primary/30 transition-colors"
                         >
-                            <label className="block text-sm font-medium text-text-secondary mb-2">
+                            <label className="block text-sm font-semibold text-text-secondary mb-2">
                                 {portalLabels[portal] || portal}
                             </label>
                             <div className="relative">
@@ -168,15 +193,23 @@ export default function AdminPlans() {
                         </div>
                     ))}
                 </div>
-            </Card>
+            </motion.div>
 
             {/* ── Feature Add-on Prices ── */}
-            <Card>
-                <div className="flex items-center gap-2 mb-5">
-                    <div className="w-8 h-8 rounded-lg bg-[#2DBDB6]/10 flex items-center justify-center">
+            <motion.div
+                custom={1}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                className="relative bg-bg-surface border border-border rounded-2xl p-6 shadow-sm overflow-hidden"
+            >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-accent to-primary" />
+
+                <div className="flex items-center gap-2.5 mb-5 mt-1">
+                    <div className="w-9 h-9 rounded-xl bg-[#2DBDB6]/10 flex items-center justify-center">
                         <FiBox size={16} className="text-[#2DBDB6]" />
                     </div>
-                    <h2 className="text-lg font-semibold text-text-primary">
+                    <h2 className="text-lg font-bold text-text-primary">
                         Feature Add-on Prices
                     </h2>
                     <span className="text-xs text-text-tertiary ml-1">
@@ -187,17 +220,17 @@ export default function AdminPlans() {
                 <div className="space-y-6">
                     {Object.entries(featuresByPortal).map(([portal, features]) => (
                         <div key={portal}>
-                            <h3 className="text-sm font-semibold text-text-tertiary uppercase tracking-wider mb-3">
+                            <h3 className="text-xs font-semibold text-text-tertiary uppercase tracking-widest mb-3">
                                 {portalLabels[portal] || portal} Portal
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {features.map((feat) => (
                                     <div
                                         key={feat.id}
-                                        className="flex items-center justify-between gap-4 border border-border rounded-lg px-4 py-3 hover:border-primary/30 transition-colors"
+                                        className="flex items-center justify-between gap-4 border border-border rounded-xl px-4 py-3 hover:border-primary/30 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-sm font-medium text-text-primary truncate">
+                                            <p className="text-sm font-semibold text-text-primary truncate">
                                                 {feat.name}
                                             </p>
                                             <p className="text-xs text-text-tertiary truncate">
@@ -227,15 +260,23 @@ export default function AdminPlans() {
                         </div>
                     ))}
                 </div>
-            </Card>
+            </motion.div>
 
             {/* ── Bundle Discounts ── */}
-            <Card>
-                <div className="flex items-center gap-2 mb-5">
-                    <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center">
+            <motion.div
+                custom={2}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                className="relative bg-bg-surface border border-border rounded-2xl p-6 shadow-sm overflow-hidden"
+            >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-warning to-accent" />
+
+                <div className="flex items-center gap-2.5 mb-5 mt-1">
+                    <div className="w-9 h-9 rounded-xl bg-warning/10 flex items-center justify-center">
                         <FiPercent size={16} className="text-warning" />
                     </div>
-                    <h2 className="text-lg font-semibold text-text-primary">
+                    <h2 className="text-lg font-bold text-text-primary">
                         Bundle Discounts
                     </h2>
                 </div>
@@ -244,9 +285,9 @@ export default function AdminPlans() {
                     {bundleDiscounts.map((disc) => (
                         <div
                             key={disc.id}
-                            className="border border-border rounded-lg p-4 hover:border-primary/30 transition-colors"
+                            className="border border-border rounded-xl p-4 hover:border-warning/30 transition-colors"
                         >
-                            <label className="block text-sm font-medium text-text-secondary mb-2">
+                            <label className="block text-sm font-semibold text-text-secondary mb-2">
                                 {disc.name}
                             </label>
                             <div className="relative">
@@ -270,12 +311,16 @@ export default function AdminPlans() {
                         </div>
                     ))}
                 </div>
-            </Card>
+            </motion.div>
 
             {/* Sticky save bar when dirty */}
             {dirty && (
-                <div className="fixed bottom-0 left-0 right-0 bg-bg-surface/95 backdrop-blur border-t border-border px-6 py-3 flex items-center justify-between z-50">
-                    <p className="text-sm text-text-secondary">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="fixed bottom-0 left-0 right-0 bg-bg-surface/95 backdrop-blur border-t border-border px-6 py-3 flex items-center justify-between z-50"
+                >
+                    <p className="text-sm text-text-secondary font-medium">
                         You have unsaved changes
                     </p>
                     <Button
@@ -286,7 +331,7 @@ export default function AdminPlans() {
                     >
                         Save Changes
                     </Button>
-                </div>
+                </motion.div>
             )}
         </div>
     );

@@ -19,14 +19,16 @@ export default function PricingSummary({
 }: Props) {
     if (!breakdown) {
         return (
-            <div className="bg-bg-surface border border-border rounded-xl p-6 text-center">
-                <div className="w-14 h-14 rounded-full bg-bg-muted flex items-center justify-center mx-auto mb-4">
+            <div className="relative bg-bg-surface border border-border rounded-2xl p-6 text-center overflow-hidden">
+                {/* Top accent bar */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary to-accent" />
+                <div className="w-14 h-14 rounded-2xl bg-bg-muted flex items-center justify-center mx-auto mb-4 mt-2">
                     <FiShoppingCart size={24} className="text-text-tertiary" />
                 </div>
-                <h3 className="text-lg font-semibold text-text-primary mb-1">
+                <h3 className="text-lg font-bold text-text-primary mb-1.5">
                     Your Selection
                 </h3>
-                <p className="text-sm text-text-tertiary">
+                <p className="text-sm text-text-tertiary leading-relaxed">
                     Select at least one portal to see pricing
                 </p>
             </div>
@@ -37,8 +39,11 @@ export default function PricingSummary({
     const period = isAnnual ? "/yr" : "/mo";
 
     return (
-        <div className="bg-bg-surface border border-border rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-text-primary mb-5">
+        <div className="relative bg-bg-surface border border-border rounded-2xl p-6 shadow-sm overflow-hidden">
+            {/* Top accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary to-accent" />
+
+            <h3 className="text-lg font-bold text-text-primary mb-5 mt-1">
                 Order Summary
             </h3>
 
@@ -71,7 +76,7 @@ export default function PricingSummary({
             {/* Subtotal */}
             <div className="flex justify-between text-sm mb-2">
                 <span className="text-text-secondary">Subtotal</span>
-                <span className="text-text-primary">₹{breakdown.subtotal.toLocaleString()}</span>
+                <span className="text-text-primary font-medium">₹{breakdown.subtotal.toLocaleString()}</span>
             </div>
 
             {/* Discount */}
@@ -81,7 +86,7 @@ export default function PricingSummary({
                         <FiTag size={13} />
                         Bundle discount ({breakdown.discountPercentage}%)
                     </span>
-                    <span className="text-success font-medium">
+                    <span className="text-success font-semibold">
                         −₹{breakdown.discountAmount.toLocaleString()}
                     </span>
                 </div>
@@ -89,7 +94,7 @@ export default function PricingSummary({
 
             {/* Annual savings note */}
             {isAnnual && (
-                <div className="text-xs text-success bg-success-light px-3 py-1.5 rounded-lg mb-3">
+                <div className="text-xs text-success bg-success-light px-3 py-2 rounded-xl mb-3 font-medium">
                     🎉 You save 2 months with annual billing!
                 </div>
             )}
@@ -101,10 +106,10 @@ export default function PricingSummary({
             <div className="flex justify-between items-baseline mb-6">
                 <span className="text-text-primary font-semibold">Total</span>
                 <div className="text-right">
-                    <span className="text-2xl font-bold text-text-primary">
+                    <span className="text-3xl font-extrabold text-text-primary">
                         ₹{breakdown.total.toLocaleString()}
                     </span>
-                    <span className="text-sm text-text-tertiary">{period}</span>
+                    <span className="text-sm text-text-tertiary ml-0.5">{period}</span>
                 </div>
             </div>
 

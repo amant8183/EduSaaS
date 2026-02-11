@@ -1,11 +1,11 @@
 import { useState, useMemo, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiMail, FiLock, FiUser } from "react-icons/fi";
+import { motion } from "framer-motion";
+import { FiMail, FiLock, FiUser, FiUserPlus } from "react-icons/fi";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import Card from "../components/ui/Card";
 import type { ApiError } from "../types";
 
 // ===== Password Strength =====
@@ -96,20 +96,40 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
+        <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden relative">
+            {/* Background glow */}
+            <div className="absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/8 blur-[120px]" />
+                <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] rounded-full bg-accent/6 blur-[100px]" />
+            </div>
+
+            <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="w-full max-w-md"
+            >
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-text-primary mb-2">
-                        Create your account
+                    <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-5">
+                        <FiUserPlus size={24} className="text-accent" />
+                    </div>
+                    <h1 className="text-3xl font-extrabold text-text-primary mb-2">
+                        Create your{" "}
+                        <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
+                            account
+                        </span>
                     </h1>
                     <p className="text-text-secondary">
                         Get started with your free account
                     </p>
                 </div>
 
-                <Card padding="lg">
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Card */}
+                <div className="relative bg-bg-surface border border-border rounded-2xl p-7 shadow-sm overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-accent to-primary" />
+
+                    <form onSubmit={handleSubmit} className="space-y-5 mt-1">
                         <Input
                             label="Full Name"
                             placeholder="John Doe"
@@ -164,19 +184,19 @@ export default function RegisterPage() {
                             Create Account
                         </Button>
                     </form>
-                </Card>
+                </div>
 
                 {/* Footer */}
                 <p className="text-center text-sm text-text-secondary mt-6">
                     Already have an account?{" "}
                     <Link
                         to="/login"
-                        className="text-primary font-medium hover:text-primary-hover transition-colors"
+                        className="text-primary font-semibold hover:text-primary-hover transition-colors"
                     >
                         Sign in
                     </Link>
                 </p>
-            </div>
+            </motion.div>
         </div>
     );
 }
