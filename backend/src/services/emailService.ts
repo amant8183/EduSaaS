@@ -1,13 +1,28 @@
 import nodemailer from "nodemailer";
 
 // Configure Brevo SMTP transport
+const smtpHost = process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com";
+const smtpPort = parseInt(process.env.BREVO_SMTP_PORT || "587");
+const smtpUser = process.env.BREVO_SMTP_USER;
+const smtpPass = process.env.BREVO_SMTP_PASS;
+
+// Debug: log SMTP config on startup (remove after fixing)
+console.log("SMTP Config:", {
+    host: smtpHost,
+    port: smtpPort,
+    user: smtpUser,
+    passLength: smtpPass?.length,
+    passStart: smtpPass?.substring(0, 10),
+    passEnd: smtpPass?.substring((smtpPass?.length || 0) - 6),
+});
+
 const transporter = nodemailer.createTransport({
-    host: process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com",
-    port: parseInt(process.env.BREVO_SMTP_PORT || "587"),
-    secure: false, // true for 465, false for other ports
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
     auth: {
-        user: process.env.BREVO_SMTP_USER,
-        pass: process.env.BREVO_SMTP_PASS,
+        user: smtpUser,
+        pass: smtpPass,
     },
 });
 
