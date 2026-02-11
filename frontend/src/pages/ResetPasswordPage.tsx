@@ -8,6 +8,23 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import type { ApiError } from "../types";
 
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden relative">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/8 blur-[120px]" />
+            <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-accent/6 blur-[100px]" />
+        </div>
+        <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="w-full max-w-md"
+        >
+            {children}
+        </motion.div>
+    </div>
+);
+
 export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token") || "";
@@ -51,24 +68,6 @@ export default function ResetPasswordPage() {
             setLoading(false);
         }
     };
-
-    // ── Shared wrapper ──
-    const Wrapper = ({ children }: { children: React.ReactNode }) => (
-        <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden relative">
-            <div className="absolute inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/8 blur-[120px]" />
-                <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-accent/6 blur-[100px]" />
-            </div>
-            <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="w-full max-w-md"
-            >
-                {children}
-            </motion.div>
-        </div>
-    );
 
     // ── Invalid token ──
     if (!token) {
