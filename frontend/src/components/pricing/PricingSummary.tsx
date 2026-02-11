@@ -89,7 +89,7 @@ export default function PricingSummary({
 
             {/* Annual savings note */}
             {isAnnual && (
-                <div className="text-xs text-success bg-success-light px-3 py-1.5 rounded-md mb-3">
+                <div className="text-xs text-success bg-success-light px-3 py-1.5 rounded-lg mb-3">
                     🎉 You save 2 months with annual billing!
                 </div>
             )}

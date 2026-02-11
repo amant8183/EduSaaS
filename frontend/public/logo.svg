@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8B7CF6"/>
+      <stop offset="50%" stop-color="#6C5CE7"/>
+      <stop offset="100%" stop-color="#4C3ED4"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="48" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="eLetter" x1="11" y1="9" x2="37" y2="39" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E2DEFF"/>
+    </linearGradient>
+    <filter id="inner-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feOffset dx="0" dy="1.5" result="offset"/>
+      <feComposite in="SourceGraphic" in2="offset" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Base shape -->
+  <rect width="48" height="48" rx="14" fill="url(#bg)"/>
+  <!-- Top shine -->
+  <rect width="48" height="48" rx="14" fill="url(#shine)"/>
+  <!-- Subtle inner border -->
+  <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="13.25" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.5" fill="none"/>
+
+  <!-- Stylized "E" — staggered bars for a dynamic modern feel -->
+  <!-- Vertical spine -->
+  <rect x="11" y="9" width="4.5" height="30" rx="2.25" fill="url(#eLetter)"/>
+  <!-- Top bar — full width -->
+  <rect x="11" y="9" width="24" height="4.5" rx="2.25" fill="url(#eLetter)"/>
+  <!-- Middle bar — offset right + shorter for asymmetry -->
+  <rect x="15" y="21.75" width="16" height="4.5" rx="2.25" fill="url(#eLetter)" opacity="0.8"/>
+  <!-- Bottom bar — full width -->
+  <rect x="11" y="34.5" width="24" height="4.5" rx="2.25" fill="url(#eLetter)"/>
+
+  <!-- Teal accent — pill shape instead of circle -->
+  <rect x="34" y="22" width="6" height="4" rx="2" fill="#00CEC9" opacity="0.9"/>
+</svg>

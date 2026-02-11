@@ -4,11 +4,11 @@ import {
     FiMenu,
     FiX,
     FiLogOut,
-    FiUser,
     FiShield,
 } from "react-icons/fi";
 import { useAuth } from "../../hooks/useAuth";
 import ThemeToggle from "../ui/ThemeToggle";
+import Logo from "/logo.svg";
 
 export default function Navbar() {
     const { isAuthenticated, isAdmin, user, logout } = useAuth();
@@ -16,6 +16,19 @@ export default function Navbar() {
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
+    const profileRef = useRef<HTMLDivElement>(null);
+
+    // Close profile dropdown on outside click
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+                setProfileOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClick);
+        return () => document.removeEventListener("mousedown", handleClick);
+    }, []);
 
     // Shadow on scroll
     useEffect(() => {
@@ -69,6 +82,7 @@ export default function Navbar() {
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2.5 group">
+                        <img src={Logo} alt="Logo" className="h-7 w-7" />
                         <span className="text-xl font-bold text-text-primary tracking-tight">
                             EduSaaS
                         </span>
@@ -101,30 +115,43 @@ export default function Navbar() {
                         <ThemeToggle />
 
                         {isAuthenticated ? (
-                            <div className="flex items-center gap-4">
-                                <span className="text-sm text-text-secondary flex items-center gap-1.5 max-w-[160px] truncate">
-                                    <FiUser size={14} className="shrink-0" />
-                                    {user?.name}
-                                </span>
+                            <div className="relative" ref={profileRef}>
                                 <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-error transition-colors duration-150 cursor-pointer"
+                                    onClick={() => setProfileOpen(!profileOpen)}
+                                    className="w-7.5 h-7.5 rounded-lg text-white font-bold text-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer shadow-[0_2px_8px_rgba(139,124,246,0.4)] border border-white/20"
+                                    style={{ background: "linear-gradient(145deg, #A99CF7 0%, #8B7CF6 35%, #7565E0 70%, #6554CC 100%)" }}
+                                    aria-label="User menu"
                                 >
-                                    <FiLogOut size={14} />
-                                    Logout
+                                    {user?.name?.charAt(0).toUpperCase() || "U"}
                                 </button>
+
+                                {profileOpen && (
+                                    <div className="absolute right-0 mt-2 w-56 bg-bg-surface border border-border rounded-xl shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                                        <div className="px-4 py-3 border-b border-border">
+                                            <p className="text-sm font-semibold text-text-primary truncate">{user?.name}</p>
+                                            <p className="text-xs text-text-tertiary truncate mt-0.5">{user?.email}</p>
+                                        </div>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-error hover:bg-bg-muted transition-colors cursor-pointer text-left mt-1"
+                                        >
+                                            <FiLogOut size={14} />
+                                            Sign out
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <div className="flex items-center gap-3">
                                 <Link
                                     to="/login"
-                                    className="px-3 py-2 text-sm font-medium text-text-primary rounded-md hover:bg-bg-elevated transition-colors duration-150"
+                                    className="px-3 py-2 text-sm font-medium text-text-primary rounded-xl hover:bg-bg-elevated transition-colors duration-150"
                                 >
                                     Login
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-3 py-2 text-sm font-medium bg-primary text-text-inverse rounded-md hover:bg-primary-hover active:scale-[0.98] transition-all duration-150"
+                                    className="px-3 py-2 text-sm font-medium bg-primary text-text-inverse rounded-xl hover:bg-primary-hover active:scale-[0.98] transition-all duration-150 shadow-sm"
                                 >
                                     Get Started
                                 </Link>
@@ -137,7 +164,7 @@ export default function Navbar() {
                         <ThemeToggle />
                         <button
                             onClick={() => setMobileOpen(!mobileOpen)}
-                            className="p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-muted transition-colors cursor-pointer"
+                            className="p-2 rounded-xl text-text-secondary hover:text-text-primary hover:bg-bg-muted transition-colors cursor-pointer"
                             aria-label={mobileOpen ? "Close menu" : "Open menu"}
                         >
                             {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
@@ -162,7 +189,7 @@ export default function Navbar() {
                     <div className="flex flex-col p-6 gap-1">
                         <Link
                             to="/pricing"
-                            className={`block px-4 py-3 rounded-md transition-colors ${isActive("/pricing")
+                            className={`block px-4 py-3 rounded-xl transition-colors ${isActive("/pricing")
                                 ? "bg-primary-light text-primary font-medium"
                                 : "text-text-secondary hover:bg-bg-muted hover:text-text-primary"
                                 }`}
@@ -173,7 +200,7 @@ export default function Navbar() {
                         {isAuthenticated && (
                             <Link
                                 to="/dashboard"
-                                className={`block px-4 py-3 rounded-md transition-colors ${isActive("/dashboard")
+                                className={`block px-4 py-3 rounded-xl transition-colors ${isActive("/dashboard")
                                     ? "bg-primary-light text-primary font-medium"
                                     : "text-text-secondary hover:bg-bg-muted hover:text-text-primary"
                                     }`}
@@ -185,7 +212,7 @@ export default function Navbar() {
                         {isAdmin && (
                             <Link
                                 to="/admin"
-                                className={`flex items-center gap-1.5 px-4 py-3 rounded-md transition-colors ${isActive("/admin")
+                                className={`flex items-center gap-1.5 px-4 py-3 rounded-xl transition-colors ${isActive("/admin")
                                     ? "bg-primary-light text-primary font-medium"
                                     : "text-text-secondary hover:bg-bg-muted hover:text-text-primary"
                                     }`}
@@ -205,7 +232,7 @@ export default function Navbar() {
                                 </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="flex items-center gap-2 px-4 py-3 rounded-md text-error hover:bg-error-light transition-colors cursor-pointer text-left"
+                                    className="flex items-center gap-2 px-4 py-3 rounded-xl text-error hover:bg-error-light transition-colors cursor-pointer text-left"
                                 >
                                     <FiLogOut size={16} />
                                     Logout
@@ -215,13 +242,13 @@ export default function Navbar() {
                             <div className="flex flex-col gap-2">
                                 <Link
                                     to="/login"
-                                    className="px-4 py-3 text-center text-sm font-medium text-text-primary rounded-md border border-border hover:bg-bg-muted transition-colors"
+                                    className="px-4 py-3 text-center text-sm font-medium text-text-primary rounded-xl border border-border hover:bg-bg-muted transition-colors"
                                 >
                                     Log in
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-4 py-3 text-center text-sm font-medium bg-primary text-text-inverse rounded-md hover:bg-primary-hover transition-colors"
+                                    className="px-4 py-3 text-center text-sm font-medium bg-primary text-text-inverse rounded-xl hover:bg-primary-hover transition-colors shadow-sm"
                                 >
                                     Get Started
                                 </Link>

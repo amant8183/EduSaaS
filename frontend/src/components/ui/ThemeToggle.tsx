@@ -22,7 +22,7 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={() => setIsDark((prev) => !prev)}
-            className="relative w-10 h-10 flex items-center justify-center rounded-md text-text-primary hover:bg-bg-elevated transition-all duration-300 cursor-pointer group"
+            className="relative w-10 h-10 flex items-center justify-center rounded-xl text-text-primary hover:bg-bg-elevated transition-all duration-300 cursor-pointer group"
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             title={isDark ? "Light mode" : "Dark mode"}
         >
@@ -34,7 +34,7 @@ export default function ThemeToggle() {
             </span>
 
             {/* Hover scale effect */}
-            <span className="absolute inset-0 rounded-md transition-transform duration-150 group-hover:scale-105 group-active:scale-95" />
+            <span className="absolute inset-0 rounded-xl transition-transform duration-150 group-hover:scale-105 group-active:scale-95" />
         </button>
     );
 }

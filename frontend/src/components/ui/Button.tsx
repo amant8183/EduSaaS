@@ -13,19 +13,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<Variant, string> = {
     primary:
-        "bg-primary text-text-inverse hover:bg-primary-hover focus-visible:ring-primary/40",
+        "bg-primary text-text-inverse hover:bg-primary-hover shadow-sm hover:shadow-md focus-visible:ring-primary/30",
     secondary:
         "bg-bg-elevated text-text-primary border border-border hover:bg-bg-muted focus-visible:ring-border",
     danger:
-        "bg-error text-white hover:bg-error/90 focus-visible:ring-error/40",
+        "bg-error text-white hover:bg-error/90 focus-visible:ring-error/30",
     ghost:
-        "bg-transparent text-primary hover:bg-primary-light focus-visible:ring-primary/40",
+        "bg-transparent text-primary hover:bg-primary-light focus-visible:ring-primary/30",
 };
 
 const sizeStyles: Record<Size, string> = {
-    sm: "h-8 px-3 text-sm gap-1.5 rounded-md",
-    md: "h-10 px-4 text-[15px] gap-2 rounded-md",
-    lg: "h-12 px-6 text-base gap-2.5 rounded-md",
+    sm: "h-8 px-3 text-sm gap-1.5 rounded-lg",
+    md: "h-10 px-4 text-[15px] gap-2 rounded-xl",
+    lg: "h-12 px-6 text-base gap-2.5 rounded-xl",
 };
 
 export default function Button({

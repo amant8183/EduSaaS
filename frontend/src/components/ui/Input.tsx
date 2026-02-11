@@ -47,15 +47,15 @@ export default function Input({
                     id={inputId}
                     type={isPassword && showPassword ? "text" : type}
                     className={`
-            w-full h-12 bg-bg-surface text-text-primary text-[15px]
-            border rounded-md outline-none
-            transition-all duration-150
+            w-full h-[52px] bg-bg-elevated/50 text-text-primary text-[15px]
+            border rounded-xl outline-none
+            transition-all duration-200
             placeholder:text-text-tertiary
             ${icon ? "pl-10" : "pl-4"}
             ${isPassword || rightIcon ? "pr-11" : "pr-4"}
             ${error
-                            ? "border-error focus:border-error focus:ring-3 focus:ring-error/15"
-                            : "border-border focus:border-primary focus:ring-3 focus:ring-primary/15"
+                            ? "border-error focus:border-error focus:ring-3 focus:ring-error/15 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.08)]"
+                            : "border-border focus:border-primary focus:ring-3 focus:ring-primary/15 focus:shadow-[0_0_0_3px_rgba(108,92,231,0.08)]"
                         }
             disabled:opacity-50 disabled:cursor-not-allowed
             ${className}

@@ -113,7 +113,7 @@ export default function DashboardPage() {
             <div className="bg-bg-surface border border-border rounded-xl p-6 mb-6 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                             <FiPackage size={20} className="text-primary" />
                         </div>
                         <div>
@@ -140,7 +140,7 @@ export default function DashboardPage() {
                     {!hasSub && (
                         <button
                             onClick={() => navigate("/pricing")}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-white text-sm font-medium hover:bg-primary-hover transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-hover transition-colors cursor-pointer"
                         >
                             Get Started <FiArrowRight size={14} />
                         </button>
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                     <>
                         {/* Dates & days remaining */}
                         <div className="grid sm:grid-cols-3 gap-4 mb-5">
-                            <div className="flex items-center gap-3 bg-bg-muted/50 rounded-md px-4 py-3">
+                            <div className="flex items-center gap-3 bg-bg-muted/50 rounded-xl px-4 py-3">
                                 <FiCalendar size={16} className="text-text-tertiary" />
                                 <div>
                                     <p className="text-xs text-text-tertiary">Start Date</p>
@@ -160,7 +160,7 @@ export default function DashboardPage() {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3 bg-bg-muted/50 rounded-md px-4 py-3">
+                            <div className="flex items-center gap-3 bg-bg-muted/50 rounded-xl px-4 py-3">
                                 <FiCalendar size={16} className="text-text-tertiary" />
                                 <div>
                                     <p className="text-xs text-text-tertiary">End Date</p>
@@ -169,7 +169,7 @@ export default function DashboardPage() {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3 bg-bg-muted/50 rounded-md px-4 py-3">
+                            <div className="flex items-center gap-3 bg-bg-muted/50 rounded-xl px-4 py-3">
                                 <FiClock size={16} className="text-text-tertiary" />
                                 <div>
                                     <p className="text-xs text-text-tertiary">Days Remaining</p>
@@ -185,7 +185,7 @@ export default function DashboardPage() {
                             <button
                                 onClick={handleToggleAutoRenew}
                                 disabled={actionLoading === "autoRenew"}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-border text-sm font-medium text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer disabled:opacity-50"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-medium text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer disabled:opacity-50"
                             >
                                 {sub.autoRenew ? <FiToggleRight size={16} className="text-success" /> : <FiToggleLeft size={16} />}
                                 Auto-renew: {sub.autoRenew ? "On" : "Off"}
@@ -193,7 +193,7 @@ export default function DashboardPage() {
                             <button
                                 onClick={handleCancel}
                                 disabled={actionLoading === "cancel"}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-error/30 text-sm font-medium text-error hover:bg-error/5 transition-colors cursor-pointer disabled:opacity-50"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-error/30 text-sm font-medium text-error hover:bg-error/5 transition-colors cursor-pointer disabled:opacity-50"
                             >
                                 <FiXCircle size={16} />
                                 Cancel Subscription
@@ -217,7 +217,7 @@ export default function DashboardPage() {
                             return (
                                 <div
                                     key={portalId}
-                                    className={`flex items-center gap-3 rounded-md px-4 py-3 ${meta.color}`}
+                                    className={`flex items-center gap-3 rounded-xl px-4 py-3 ${meta.color}`}
                                 >
                                     <span className="text-xl">{meta.icon}</span>
                                     <div>
@@ -252,7 +252,7 @@ export default function DashboardPage() {
             <div className="bg-bg-surface border border-border rounded-xl p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                             <FiCreditCard size={20} className="text-primary" />
                         </div>
                         <h2 className="text-lg font-semibold text-text-primary">Payment History</h2>
@@ -317,14 +317,14 @@ export default function DashboardPage() {
                                     <button
                                         onClick={() => setPaymentPage((p) => Math.max(1, p - 1))}
                                         disabled={paymentPage === 1}
-                                        className="p-2 rounded-md border border-border text-text-secondary hover:bg-bg-muted transition-colors disabled:opacity-30 cursor-pointer"
+                                        className="p-2 rounded-xl border border-border text-text-secondary hover:bg-bg-muted transition-colors disabled:opacity-30 cursor-pointer"
                                     >
                                         <FiChevronLeft size={14} />
                                     </button>
                                     <button
                                         onClick={() => setPaymentPage((p) => p + 1)}
                                         disabled={!payments.pagination.hasMore}
-                                        className="p-2 rounded-md border border-border text-text-secondary hover:bg-bg-muted transition-colors disabled:opacity-30 cursor-pointer"
+                                        className="p-2 rounded-xl border border-border text-text-secondary hover:bg-bg-muted transition-colors disabled:opacity-30 cursor-pointer"
                                     >
                                         <FiChevronRight size={14} />
                                     </button>

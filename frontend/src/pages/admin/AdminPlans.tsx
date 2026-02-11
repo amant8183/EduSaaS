@@ -162,7 +162,7 @@ export default function AdminPlans() {
                                             Math.max(0, Number(e.target.value))
                                         )
                                     }
-                                    className="w-full h-10 pl-8 pr-4 bg-bg-surface border border-border rounded-md text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all"
+                                    className="w-full h-10 pl-8 pr-4 bg-bg-surface border border-border rounded-xl text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all"
                                 />
                             </div>
                         </div>
@@ -218,7 +218,7 @@ export default function AdminPlans() {
                                                         Math.max(0, Number(e.target.value))
                                                     )
                                                 }
-                                                className="w-full h-9 pl-8 pr-3 bg-bg-surface border border-border rounded-md text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all"
+                                                className="w-full h-9 pl-8 pr-3 bg-bg-surface border border-border rounded-xl text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all"
                                             />
                                         </div>
                                     </div>
@@ -261,7 +261,7 @@ export default function AdminPlans() {
                                             Math.min(100, Math.max(0, Number(e.target.value)))
                                         )
                                     }
-                                    className="w-full h-10 pl-4 pr-8 bg-bg-surface border border-border rounded-md text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all"
+                                    className="w-full h-10 pl-4 pr-8 bg-bg-surface border border-border rounded-xl text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all"
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary text-sm">
                                     %

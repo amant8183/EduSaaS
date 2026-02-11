@@ -23,7 +23,7 @@ export default function AdminSubscriptions() {
                 <select
                     value={statusFilter}
                     onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                    className="px-4 py-2.5 rounded-md border border-border bg-bg-surface text-text-primary text-sm"
+                    className="px-4 py-2.5 rounded-xl border border-border bg-bg-surface text-text-primary text-sm"
                 >
                     <option value="">All Statuses</option>
                     <option value="active">Active</option>
@@ -94,8 +94,8 @@ export default function AdminSubscriptions() {
                     <div className="flex items-center justify-between px-4 py-3 border-t border-border">
                         <p className="text-xs text-text-tertiary">Page {page} of {totalPages}</p>
                         <div className="flex gap-2">
-                            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="p-2 rounded-md border border-border text-text-secondary hover:bg-bg-muted disabled:opacity-30 cursor-pointer"><FiChevronLeft size={14} /></button>
-                            <button onClick={() => setPage((p) => p + 1)} disabled={page >= totalPages} className="p-2 rounded-md border border-border text-text-secondary hover:bg-bg-muted disabled:opacity-30 cursor-pointer"><FiChevronRight size={14} /></button>
+                            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="p-2 rounded-xl border border-border text-text-secondary hover:bg-bg-muted disabled:opacity-30 cursor-pointer"><FiChevronLeft size={14} /></button>
+                            <button onClick={() => setPage((p) => p + 1)} disabled={page >= totalPages} className="p-2 rounded-xl border border-border text-text-secondary hover:bg-bg-muted disabled:opacity-30 cursor-pointer"><FiChevronRight size={14} /></button>
                         </div>
                     </div>
                 )}
