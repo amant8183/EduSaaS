@@ -78,7 +78,7 @@ export default function AdminPayments() {
                                 {payments.map((p) => (
                                     <tr key={p._id} className="border-b border-border/50 last:border-0 hover:bg-bg-elevated/40 transition-colors">
                                         <td className="py-3.5 px-4">
-                                            {typeof p.userId === "object" ? (
+                                            {p.userId && typeof p.userId === "object" ? (
                                                 <div>
                                                     <p className="font-semibold text-text-primary">{p.userId.name}</p>
                                                     <p className="text-xs text-text-tertiary">{p.userId.email}</p>

@@ -130,7 +130,7 @@ export default function AdminDashboard() {
                                 <div key={p.id} className="flex items-center justify-between text-sm py-2 border-b border-border/50 last:border-0">
                                     <div>
                                         <p className="text-text-primary font-semibold">
-                                            {typeof p.user === "object" ? p.user.name : "Unknown"}
+                                            {p.user && typeof p.user === "object" ? p.user.name : "Unknown"}
                                         </p>
                                         <p className="text-xs text-text-tertiary">
                                             {new Date(p.date).toLocaleDateString()}

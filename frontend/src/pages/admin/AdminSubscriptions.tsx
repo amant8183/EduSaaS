@@ -79,10 +79,10 @@ export default function AdminSubscriptions() {
                                     <tr key={s._id} className="border-b border-border/50 last:border-0 hover:bg-bg-elevated/40 transition-colors">
                                         <td className="py-3.5 px-4">
                                             <p className="font-semibold text-text-primary">
-                                                {typeof s.userId === "object" ? s.userId.name : "—"}
+                                                {s.userId && typeof s.userId === "object" ? s.userId.name : "—"}
                                             </p>
                                             <p className="text-xs text-text-tertiary">
-                                                {typeof s.userId === "object" ? s.userId.email : s.userId}
+                                                {s.userId && typeof s.userId === "object" ? s.userId.email : s.userId ?? "—"}
                                             </p>
                                         </td>
                                         <td className="py-3.5 px-4">
