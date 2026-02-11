@@ -58,7 +58,7 @@ export const sendVerificationEmail = async (to: string, name: string, token: str
 };
 
 export const sendPasswordResetEmail = async (to: string, name: string, token: string) => {
-    const resetUrl = `${APP_URL}/auth/reset-password?token=${token}`;
+    const resetUrl = `${APP_URL}/reset-password?token=${token}`;
 
     console.log(`Sending password reset email to ${to} from ${FROM_EMAIL}`);
 
