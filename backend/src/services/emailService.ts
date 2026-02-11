@@ -1,11 +1,10 @@
 import nodemailer from "nodemailer";
 
 // Configure Brevo SMTP transport
-const smtpPort = parseInt(process.env.BREVO_SMTP_PORT || "587");
 const transporter = nodemailer.createTransport({
     host: process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com",
-    port: smtpPort,
-    secure: smtpPort === 465, // true for 465, false for other ports
+    port: parseInt(process.env.BREVO_SMTP_PORT || "587"),
+    secure: false, // true for 465, false for other ports
     auth: {
         user: process.env.BREVO_SMTP_USER,
         pass: process.env.BREVO_SMTP_PASS,
